@@ -1,6 +1,6 @@
 {
-  "name": "Thread Sidebar - Example Gmail Extension",
-  "description": "Example extension showing use of the InboxSDK adding a sidebar to a Gmail thread",
+  "name": "Spokeo",
+  "description": "Example so know your contacts without leaving the window",
   "version": "0.1",
   "content_scripts": [
     {
@@ -8,7 +8,7 @@
         "https://mail.google.com/*",
         "https://inbox.google.com/*"
       ],
-      "js": ["inboxsdk.js","content.js"],
+      "js": ["inboxsdk.js","loader.js"],
       "run_at": "document_start"
     }
   ],
@@ -17,7 +17,8 @@
   ],
   "permissions": [
     "https://mail.google.com/",
-    "https://inbox.google.com/"
+    "https://inbox.google.com/",
+    "https://raw.githubusercontent.com/"
   ],
   "manifest_version": 2
 }
