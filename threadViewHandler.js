@@ -1,4 +1,4 @@
-export default (registerThreadViewHandler = (sdk) => {
+export default (sdk) => {
   sdk.Conversations.registerThreadViewHandler(threadView => {
     const el = document.createElement("div");
     el.innerHTML = "A Team with no name";
@@ -9,4 +9,4 @@ export default (registerThreadViewHandler = (sdk) => {
       el
     });
   });
-});
+};

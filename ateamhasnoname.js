@@ -13,7 +13,7 @@ Promise.all([
     var contacts = threadRowView.getContacts();
     for (var i = 0; i < contacts.length; i++) {
       var contact = contacts[i];
-      // getStripeCustomerWithoutMyDomain(contact, sdk.User.getEmailAddress()).then(function(customer) {
+      // checkforSpokeoProfile.then(function(user) {
 
       threadRowView.addImage({
         imageUrl: chrome.runtime.getURL("monkey.png"),
@@ -22,6 +22,9 @@ Promise.all([
       });
 
       // });
-    }
-  });
+		}
+	});
+	
+
+	
 });
