@@ -90,8 +90,8 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 
   console.log('A TEAM HAS NO NAME!')
 
-  sdk.Conversations.registerThreadViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["b" /* threadViewHandler */]);
-  sdk.Lists.registerThreadRowViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["a" /* threadRowViewHandler */]);
+  sdk.Conversations.registerThreadViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["a" /* threadViewHandler */]);
+  // sdk.Lists.registerThreadRowViewHandler(threadRowViewHandler);
 });
 
 
@@ -102,8 +102,8 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__threadRowViewHandler__ = __webpack_require__(4);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__threadRowViewHandler__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__["a"]; });
+/* unused harmony reexport threadRowViewHandler */
 
 
 
@@ -119,14 +119,38 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 
 
 /* harmony default export */ __webpack_exports__["a"] = (threadView => {
-  const el = document.createElement('div');
-  el.innerHTML = 'A Team with no name';
+  const el = document.createElement("div");
+  el.className = 'spokeo-sidebar'
+  el.innerHTML = "A Team with no name";
 
-  threadView.addSidebarContentPanel({
-    title: 'Sidebar Example',
-    iconUrl: Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* getAssetUrl */])('assets/monkey.png'),
+  var views = threadView.getMessageViews();
+
+  views.forEach(function(view) {
+    var sender = view.getSender();
+    var recipients = view.getRecipients();
+    console.log(sender);
+    console.log(recipients);
+  });
+
+  var sideBar = threadView.addSidebarContentPanel({
+    title: "Sidebar Exampleee",
+    iconUrl: Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* getAssetUrl */])("assets/monkey.png"),
     el
   });
+
+  //Hack to force display side bar
+  var sideBarEl = $(`[data-sdk-sidebar-instance-id='${sideBar._contentPanelViewImplementation._sidebarId}']`)[0];
+  $(sideBarEl).first().css( "display", "block !important" );
+
+  
+
+  //   getStripeCustomerWithoutMyDomain(contact, sdk.User.getEmailAddress()).then(function(customer) {
+  // 						threadRowView.addImage({
+  // 							imageUrl: chrome.runtime.getURL('monkey.png'),
+  // 							tooltip: "email",
+  // 							imageClass: "rounded_stripe"
+  // 						});
+  // 				});
 });
 
 
@@ -138,7 +162,7 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
 
 
-/* harmony default export */ __webpack_exports__["a"] = (threadRowView => {
+/* unused harmony default export */ var _unused_webpack_default_export = (threadRowView => {
   let contacts = threadRowView.getContacts();
   for (let i = 0; i < contacts.length; i++) {
     let contact = contacts[i];
@@ -146,10 +170,13 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
     threadRowView.addImage({
       imageUrl: Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* getAssetUrl */])('assets/monkey.png'),
       tooltip: 'email',
-      imageClass: 'rounded_stripe'
+      imageClass: 'rounded_stripeee'
     });
   }
 });
+
+
+
 
 
 /***/ })
