@@ -1,3 +1,4 @@
+console.log('INBOXSDK.JS');
 /*!
  * InboxSDK
  * https://www.inboxsdk.com/

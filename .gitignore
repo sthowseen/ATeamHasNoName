@@ -1,5 +1,3 @@
 node_modules
 *.bak
 *.orig
-
-dist/bundle.js

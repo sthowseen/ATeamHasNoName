@@ -9,7 +9,7 @@
         "https://inbox.google.com/*"
       ],
       "css": ["assets/styles.css"],
-      "js": ["lib/inboxsdk.js","loader.js"],
+      "js": ["inboxsdk.js","loader.js"],
       "run_at": "document_start"
     }
   ],
