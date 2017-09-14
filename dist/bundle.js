@@ -112,13 +112,17 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
   
   let el = document.createElement("div");
   el.className = 'spokeo-sidebar'
-  el.innerHTML = "<h4>Spokeo Subtitle</h4>";
+  el.innerHTML = "<h4>Spokeo Sidebar</h4>";
 
   let counter = document.createElement('div')
   counter.classList.add('spk-counter');
   counter.innerHTML = `${emailCount}`;
 
+  let contacts = document.createElement('div')
+  contacts.classList.add('spokeo-contacts');
+
   el.append(counter);
+  el.appendChild(contacts);
 
   var sideBar = threadView.addSidebarContentPanel({
     title: "",
@@ -149,8 +153,27 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 });
 
 function updateUI(resp) {
-  console.log(resp);
-  // $(".spokeo-sidebar").html(JSON.stringify(resp));
+  $('.spk-counter').text(resp.length);
+  
+  
+  resp.forEach((person) => {
+    $('<div />', {
+      class: 'spokeo-contact',
+      html: contact(person)
+    }).appendTo($('.spokeo-contacts'));
+  });
+}
+
+function contact(person) {
+  return `
+    <div class="spokeo-contact-avatar">
+      <img src="https://api.adorable.io/avatars/75/avatar.png" width="40" height="40" />
+    </div>
+    <div class="spokeo-contact-details">
+      <h2>${person.name}</h2>
+      <h3>${person.address.city}</h3>
+    </div>
+  `;
 }
 
 function fetchProfiles(users) {
