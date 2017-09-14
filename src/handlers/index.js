@@ -1,4 +1,4 @@
-import threadViewHandler from './thread-view-handler';
-import threadRowViewHandler from './thread-row-view-handler';
+import threadViewHandler from './threadViewHandler';
+import threadRowViewHandler from './threadRowViewHandler';
 
 export { threadViewHandler, threadRowViewHandler };
