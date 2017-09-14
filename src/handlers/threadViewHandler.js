@@ -75,15 +75,15 @@ function contact(person) {
 }
 
 function getName(person){
-  return person.aggregate_info.name || person.username_sources[0].realname
+  return person.aggregate_info.name || person.aggregate_info.email || person.aggregate_info.username
 }
 
 function getLocation(person){
-  return person.aggregate_info.location || 'Los Angeles, CA'
+  return person.aggregate_info.location || ''
 }
 
 function getAvatar(person){
-  return person.aggregate_info.profile_photo.src || 'https://pbs.twimg.com/profile_images/477397164453527552/uh2w1u1o_400x400.jpeg'
+  return (person.aggregate_info.profile_photo && person.aggregate_info.profile_photo.src) || 'https://pbs.twimg.com/profile_images/477397164453527552/uh2w1u1o_400x400.jpeg'
 }
 
 
