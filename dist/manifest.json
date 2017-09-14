@@ -8,7 +8,7 @@
         "https://mail.google.com/*",
         "https://inbox.google.com/*"
       ],
-      "css": ["assets/styles.css"],
+      "css": ["styles.css"],
       "js": ["inboxsdk.js","loader.js"],
       "run_at": "document_start"
     }

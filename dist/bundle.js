@@ -57,7 +57,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 1);
@@ -90,8 +90,9 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 
   console.log('A TEAM HAS NO NAME!')
 
-  sdk.Conversations.registerThreadViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["b" /* threadViewHandler */]);
-  sdk.Lists.registerThreadRowViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["a" /* threadRowViewHandler */]);
+  sdk.Conversations.registerThreadViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["c" /* threadViewHandler */]);
+  sdk.Lists.registerThreadRowViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["b" /* threadRowViewHandler */]);
+  sdk.Router.handleCustomRoute(__WEBPACK_IMPORTED_MODULE_0__handlers__["a" /* customRouteViewHandler */]);
 });
 
 
@@ -102,8 +103,11 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__threadRowViewHandler__ = __webpack_require__(4);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__threadRowViewHandler__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__customRouteViewHandler__ = __webpack_require__(5);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__threadRowViewHandler__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__customRouteViewHandler__["a"]; });
+
 
 
 
@@ -119,12 +123,22 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 
 
 /* harmony default export */ __webpack_exports__["a"] = (threadView => {
-  const el = document.createElement('div');
-  el.innerHTML = 'A Team with no name';
+  let emailCount = 4;
+  let el = document.createElement('div');
+  el.classList.add('spk-sidebar');
+
+  let counter = document.createElement('div')
+  counter.classList.add('spk-counter');
+  counter.innerHTML = `${emailCount}`;
+
+  el.append(counter);
+
+  // const listTitle = document.createElement('div').classList.add('listname');
 
   threadView.addSidebarContentPanel({
-    title: 'Sidebar Example',
-    iconUrl: Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* getAssetUrl */])('assets/monkey.png'),
+    title: `Spokeo Sidebar`,
+    iconUrl: '',
+    id: 'spk-sidebar',
     el
   });
 });
@@ -149,6 +163,16 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
       imageClass: 'rounded_stripe'
     });
   }
+});
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (customeRouteView => {
+  let el = customRouteView.getElement();
 });
 
 
