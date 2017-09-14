@@ -2,7 +2,7 @@
   "name": "a-team-has-no-name",
   "version": "1.0.0",
   "description": "Spokeofied Gmail Inbox",
-  "main": "ateamhasnoname.js",
+  "main": "dist/bundle.js",
   "scripts": {
     "build": "webpack"
   },
