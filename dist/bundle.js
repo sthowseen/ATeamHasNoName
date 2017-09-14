@@ -109,29 +109,31 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__connections__ = __webpack_require__(5);
+
 
 
 /* harmony default export */ __webpack_exports__["a"] = (threadView => {
   let emailCount = 4;
 
-  let el = document.createElement("div");
-  el.className = "spokeo-sidebar";
-  el.innerHTML = "<h4>Spokeo Sidebar</h4>";
+  let el = document.createElement('div');
+  el.className = 'spokeo-sidebar';
+  el.innerHTML = '<h4>Spokeo Sidebar</h4>';
 
-  let counter = document.createElement("div");
-  counter.classList.add("spk-counter");
+  let counter = document.createElement('div');
+  counter.classList.add('spk-counter');
   counter.innerHTML = `${emailCount}`;
 
-  let contacts = document.createElement("div");
-  contacts.classList.add("spokeo-contacts");
+  let contacts = document.createElement('div');
+  contacts.classList.add('spokeo-contacts');
 
   el.append(counter);
   el.appendChild(contacts);
 
   var sideBar = threadView.addSidebarContentPanel({
-    title: "",
-    iconUrl: "",
-    id: "spokeo-sidebar",
+    title: '',
+    iconUrl: '',
+    id: 'spokeo-sidebar',
     el
   });
 
@@ -145,7 +147,7 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
   });
 
   var userEmails = users.map(function(user) {
-    console.log(user)
+    console.log(user);
     return user.emailAddress;
   });
   fetchProfiles(userEmails);
@@ -157,54 +159,43 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
   )[0];
   $(sideBarEl)
     .first()
-    .css("display", "block !important");
+    .css('display', 'block !important');
 });
 
 function updateUI(resp) {
   resp = JSON.parse(resp);
-  $(".spk-counter").text(resp.length);
+  $('.spk-counter').text(resp.length);
 
+  let contacts = [];
   resp.forEach(person => {
-    $("<div />", {
-      class: "spokeo-contact",
-      html: contact(person)
-    }).appendTo($(".spokeo-contacts"));
+    let contact = Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* createContact */])(person);
+    contacts.push(contact);
+    $('<div />', {
+      class: 'spokeo-contact',
+      html: formatContact(contact)
+    }).appendTo($('.spokeo-contacts'));
   });
+
+  Object(__WEBPACK_IMPORTED_MODULE_1__connections__["b" /* syncContacts */])(contacts);
 }
 
-function contact(person) {
-  console.log(person)
+function formatContact(contact) {
   return `
     <div class="spokeo-contact-avatar">
-      <img src="${getAvatar(person)}" width="40" height="40" />
+      <img src="${contact.avatar}" width="40" height="40" />
     </div>
     <div class="spokeo-contact-details">
-      <h2>${getName(person)}</h2>
-      <h3>${getLocation(person)}</h3>
+      <h2>${contact.name}</h2>
+      <h3>${contact.location}</h3>
     </div>
   `;
 }
 
-function getName(person){
-  return person.aggregate_info.name || person.username_sources[0].realname
-}
-
-function getLocation(person){
-  return person.aggregate_info.location || 'Los Angeles, CA'
-}
-
-function getAvatar(person){
-  return person.aggregate_info.profile_photo.src || 'https://pbs.twimg.com/profile_images/477397164453527552/uh2w1u1o_400x400.jpeg'
-}
-
-
-
 function fetchProfiles(userEmails) {
-  console.log("****USERS****");
-  console.log(userEmails);
+  console.log('****USERS****', userEmails);
   $.get(
     `https://feature12.qa.spokeo.com/hackathon/search?e=${userEmails.join(
-      ","
+      ','
     )}`,
     updateUI
   );
@@ -217,9 +208,38 @@ function fetchProfiles(userEmails) {
 
 "use strict";
 /* unused harmony export getAssetUrl */
+/* harmony export (immutable) */ __webpack_exports__["a"] = createContact;
 function getAssetUrl(assetPath) {
   // TODO: detect if local or remote assets are needed
   return chrome.runtime.getURL(assetPath)
+}
+
+function createContact(person) {
+  return {
+    name: getName(person),
+    location: getLocation(person),
+    avatar: getAvatar(person)
+  }
+}
+
+function getName(person) {
+  return (
+    person.aggregate_info.name ||
+    person.aggregate_info.email ||
+    person.aggregate_info.username
+  );
+}
+
+function getLocation(person) {
+  return person.aggregate_info.location || '';
+}
+
+function getAvatar(person) {
+  return (
+    (person.aggregate_info.profile_photo &&
+      person.aggregate_info.profile_photo.src) ||
+    'https://pbs.twimg.com/profile_images/477397164453527552/uh2w1u1o_400x400.jpeg'
+  );
 }
 
 /***/ }),
@@ -237,14 +257,38 @@ function getAssetUrl(assetPath) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["b"] = syncContacts;
 /* harmony export (immutable) */ __webpack_exports__["a"] = createConnectionsNavItem;
-function syncContacts(...args) {
-  console.log(...args)
-  alert('sync contacts')
+function syncContacts(contacts) {
+  console.log('syncContacts', contacts);
+  let data = contacts.map(contact => createConnectionsContact(contact))
+  console.log('data', data)
 }
 
-
-
+function createConnectionsContact(contact) {
+  console.log(contact)
+  debugger
+  return {
+    first_name: contact.name,
+    // last_name: null,
+    // phone: [{ number: '601-928-8475', type: 'other' }],
+    email: [{ address: contact.email, type: 'other' }],
+    // address: [
+    //   {
+    //     street: '280 Flint Creek Rd',
+    //     region: 'MS',
+    //     city: 'Wiggins',
+    //     postal_code: '39577',
+    //     formatted: '280 Flint Creek Rd, Wiggins, MS 39577',
+    //     type: 'other'
+    //   }
+    // ],
+    groups: ['Contacts'],
+    // companies: nil,
+    // photos: nil,
+    locations: [contact.location]
+  };
+}
 
 function createConnectionsNavItem() {
   return {
