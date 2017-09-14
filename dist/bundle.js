@@ -70,6 +70,8 @@
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__handlers__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__connections__ = __webpack_require__(5);
+
 
 
 
@@ -81,6 +83,8 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 
   sdk.Conversations.registerThreadViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["b" /* threadViewHandler */]);
   sdk.Router.handleCustomRoute(__WEBPACK_IMPORTED_MODULE_0__handlers__["a" /* customRouteViewHandler */]);
+
+  sdk.NavMenu.addNavItem(Object(__WEBPACK_IMPORTED_MODULE_1__connections__["a" /* createConnectionsNavItem */])());
 });
 
 
@@ -179,6 +183,29 @@ function getAssetUrl(assetPath) {
 /* harmony default export */ __webpack_exports__["a"] = (customeRouteView => {
   let el = customRouteView.getElement();
 });
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = createConnectionsNavItem;
+function syncContacts(...args) {
+  console.log(...args)
+  alert('sync contacts')
+}
+
+
+
+
+function createConnectionsNavItem() {
+  return {
+    name: 'Spokeo Connections',
+    iconUrl: '',
+    onClick: syncContacts
+  };
+}
 
 
 /***/ })
