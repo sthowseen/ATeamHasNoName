@@ -1,4 +1,4 @@
 node_modules
 *.bak
 *.orig
-dist/*
+dist/bundle.js

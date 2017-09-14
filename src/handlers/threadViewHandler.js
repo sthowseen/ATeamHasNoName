@@ -1,21 +1,10 @@
 import { getAssetUrl } from "../utils";
+import sidebar, {sidebarList, sidebarProfile} from './sidebar';
 
 export default threadView => {
-  let emailCount = 4;
-
-  let el = document.createElement("div");
-  el.className = "spokeo-sidebar";
-  el.innerHTML = "<h4>Spokeo Sidebar</h4>";
-
-  let counter = document.createElement("div");
-  counter.classList.add("spk-counter");
-  counter.innerHTML = `${emailCount}`;
-
-  let contacts = document.createElement("div");
-  contacts.classList.add("spokeo-contacts");
-
-  el.append(counter);
-  el.appendChild(contacts);
+  let el = sidebar();
+  
+  el.innerHTML = sidebarList();
 
   var sideBar = threadView.addSidebarContentPanel({
     title: "",
@@ -26,6 +15,7 @@ export default threadView => {
 
   var views = threadView.getMessageViews();
   var users = [];
+
   views.forEach(function(view) {
     var sender = view.getSender();
     var recipients = view.getRecipients();
@@ -57,7 +47,9 @@ function updateUI(resp) {
     $("<div />", {
       class: "spokeo-contact",
       html: contact(person)
-    }).appendTo($(".spokeo-contacts"));
+    }).appendTo($(".spokeo-contacts")).click((e) => {
+      $('.spokeo-sidebar').html(sidebarProfile(person));
+    });
   });
 }
 

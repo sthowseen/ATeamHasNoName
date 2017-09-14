@@ -23,6 +23,7 @@
   top: -12px;
   right: -8px;
   padding: 25px 5px;
+  background: white;
 }
 
 /* Sidebar Title */
@@ -33,6 +34,15 @@
   position: relative;
   padding-left: 0 !important;
   font: bold 16px / 40px 'Montserrat', Arial, sans-serif !important;
+}
+
+.spokeo-sidebar h4:after {
+  content: '';
+  position: absolute;
+  border-bottom: 2px solid #0FA6EB;
+  left: 0;
+  top: 35px;
+  width: 20px;
 }
 
 /* Counter */
