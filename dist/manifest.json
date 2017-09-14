@@ -8,13 +8,13 @@
         "https://mail.google.com/*",
         "https://inbox.google.com/*"
       ],
+      "css": ["assets/styles.css"],
       "js": ["inboxsdk.js","loader.js"],
-      "run_at": "document_start",
-      "css": ["styles.css"]
+      "run_at": "document_start"
     }
   ],
   "web_accessible_resources": [
-    "monkey.png",
+    "assets/monkey.png",
     "bundle.js"
   ],
   "permissions": [

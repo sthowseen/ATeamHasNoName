@@ -6,7 +6,7 @@ export default threadView => {
 
   threadView.addSidebarContentPanel({
     title: 'Sidebar Example',
-    iconUrl: getAssetUrl('monkey.png'),
+    iconUrl: getAssetUrl('assets/monkey.png'),
     el
   });
 };

@@ -6,7 +6,7 @@ export default threadRowView => {
     let contact = contacts[i];
 
     threadRowView.addImage({
-      imageUrl: getAssetUrl('monkey.png'),
+      imageUrl: getAssetUrl('assets/monkey.png'),
       tooltip: 'email',
       imageClass: 'rounded_stripe'
     });
