@@ -2,21 +2,25 @@ import { getAssetUrl } from "../utils";
 
 export default threadView => {
   let emailCount = 4;
-  
-  let el = document.createElement("div");
-  el.className = 'spokeo-sidebar'
-  el.innerHTML = "<h4>Spokeo Subtitle</h4>";
 
-  let counter = document.createElement('div')
-  counter.classList.add('spk-counter');
+  let el = document.createElement("div");
+  el.className = "spokeo-sidebar";
+  el.innerHTML = "<h4>Spokeo Sidebar</h4>";
+
+  let counter = document.createElement("div");
+  counter.classList.add("spk-counter");
   counter.innerHTML = `${emailCount}`;
 
+  let contacts = document.createElement("div");
+  contacts.classList.add("spokeo-contacts");
+
   el.append(counter);
+  el.appendChild(contacts);
 
   var sideBar = threadView.addSidebarContentPanel({
     title: "",
-    iconUrl: '',
-    id: 'spokeo-sidebar',
+    iconUrl: "",
+    id: "spokeo-sidebar",
     el
   });
 
@@ -29,7 +33,11 @@ export default threadView => {
     users = users.concat(recipients);
   });
 
-  fetchProfiles(users);
+  var userEmails = users.map(function(user) {
+    console.log(user)
+    return user.emailAddress;
+  });
+  fetchProfiles(userEmails);
 
   //Hack to force display side bar
   var sideBarEl = $(
@@ -42,12 +50,51 @@ export default threadView => {
 };
 
 function updateUI(resp) {
-  console.log(resp);
-  // $(".spokeo-sidebar").html(JSON.stringify(resp));
+  resp = JSON.parse(resp);
+  $(".spk-counter").text(resp.length);
+
+  resp.forEach(person => {
+    $("<div />", {
+      class: "spokeo-contact",
+      html: contact(person)
+    }).appendTo($(".spokeo-contacts"));
+  });
 }
 
-function fetchProfiles(users) {
+function contact(person) {
+  console.log(person)
+  return `
+    <div class="spokeo-contact-avatar">
+      <img src="${getAvatar(person)}" width="40" height="40" />
+    </div>
+    <div class="spokeo-contact-details">
+      <h2>${getName(person)}</h2>
+      <h3>${getLocation(person)}</h3>
+    </div>
+  `;
+}
+
+function getName(person){
+  return person.aggregate_info.name || person.username_sources[0].realname
+}
+
+function getLocation(person){
+  return person.aggregate_info.location || 'Los Angeles, CA'
+}
+
+function getAvatar(person){
+  return person.aggregate_info.profile_photo.src || 'https://pbs.twimg.com/profile_images/477397164453527552/uh2w1u1o_400x400.jpeg'
+}
+
+
+
+function fetchProfiles(userEmails) {
   console.log("****USERS****");
-  console.log(users);
-  $.get("https://jsonplaceholder.typicode.com/users", updateUI);
+  console.log(userEmails);
+  $.get(
+    `https://feature12.qa.spokeo.com/hackathon/search?e=${userEmails.join(
+      ","
+    )}`,
+    updateUI
+  );
 }
