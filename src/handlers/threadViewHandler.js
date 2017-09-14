@@ -13,23 +13,41 @@ export default threadView => {
 
   el.append(counter);
 
-  var views = threadView.getMessageViews();
-
-  views.forEach(function(view) {
-    var sender = view.getSender();
-    var recipients = view.getRecipients();
-    console.log(sender);
-    console.log(recipients);
-  });
-
   var sideBar = threadView.addSidebarContentPanel({
     title: "",
     iconUrl: '',
-    el,
     id: 'spokeo-sidebar',
+    el
   });
 
+  var views = threadView.getMessageViews();
+  var users = [];
+  views.forEach(function(view) {
+    var sender = view.getSender();
+    var recipients = view.getRecipients();
+    users.push(sender);
+    users = users.concat(recipients);
+  });
+
+  fetchProfiles(users);
+
   //Hack to force display side bar
-  var sideBarEl = $(`[data-sdk-sidebar-instance-id='${sideBar._contentPanelViewImplementation._sidebarId}']`)[0];
-  $(sideBarEl).first().css( "display", "block !important" );
+  var sideBarEl = $(
+    `[data-sdk-sidebar-instance-id='${sideBar._contentPanelViewImplementation
+      ._sidebarId}']`
+  )[0];
+  $(sideBarEl)
+    .first()
+    .css("display", "block !important");
 };
+
+function updateUI(resp) {
+  console.log(resp);
+  // $(".spokeo-sidebar").html(JSON.stringify(resp));
+}
+
+function fetchProfiles(users) {
+  console.log("****USERS****");
+  console.log(users);
+  $.get("https://jsonplaceholder.typicode.com/users", updateUI);
+}

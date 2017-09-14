@@ -90,7 +90,7 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__customRouteViewHandler__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__customRouteViewHandler__ = __webpack_require__(4);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__customRouteViewHandler__["a"]; });
 
@@ -104,7 +104,7 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(3);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (threadView => {
@@ -120,31 +120,48 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 
   el.append(counter);
 
-  var views = threadView.getMessageViews();
-
-  views.forEach(function(view) {
-    var sender = view.getSender();
-    var recipients = view.getRecipients();
-    console.log(sender);
-    console.log(recipients);
-  });
-
   var sideBar = threadView.addSidebarContentPanel({
     title: "",
     iconUrl: '',
-    el,
     id: 'spokeo-sidebar',
+    el
   });
 
+  var views = threadView.getMessageViews();
+  var users = [];
+  views.forEach(function(view) {
+    var sender = view.getSender();
+    var recipients = view.getRecipients();
+    users.push(sender);
+    users = users.concat(recipients);
+  });
+
+  fetchProfiles(users);
+
   //Hack to force display side bar
-  var sideBarEl = $(`[data-sdk-sidebar-instance-id='${sideBar._contentPanelViewImplementation._sidebarId}']`)[0];
-  $(sideBarEl).first().css( "display", "block !important" );
+  var sideBarEl = $(
+    `[data-sdk-sidebar-instance-id='${sideBar._contentPanelViewImplementation
+      ._sidebarId}']`
+  )[0];
+  $(sideBarEl)
+    .first()
+    .css("display", "block !important");
 });
+
+function updateUI(resp) {
+  console.log(resp);
+  // $(".spokeo-sidebar").html(JSON.stringify(resp));
+}
+
+function fetchProfiles(users) {
+  console.log("****USERS****");
+  console.log(users);
+  $.get("https://jsonplaceholder.typicode.com/users", updateUI);
+}
 
 
 /***/ }),
-/* 3 */,
-/* 4 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -155,7 +172,7 @@ function getAssetUrl(assetPath) {
 }
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
