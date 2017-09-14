@@ -1,5 +1,5 @@
 {
-  "name": "Spokeo",
+  "name": "A Team Has No Name",
   "description": "Example so know your contacts without leaving the window",
   "version": "0.1",
   "content_scripts": [
@@ -8,14 +8,14 @@
         "https://mail.google.com/*",
         "https://inbox.google.com/*"
       ],
+      "css": ["assets/styles.css"],
       "js": ["inboxsdk.js","loader.js"],
-      "run_at": "document_start",
-      "css": ["styles.css"]
+      "run_at": "document_start"
     }
   ],
   "web_accessible_resources": [
-    "monkey.png",
-    "ateamhasnoname.js"
+    "assets/monkey.png",
+    "bundle.js"
   ],
   "permissions": [
     "https://mail.google.com/",

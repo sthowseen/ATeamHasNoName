@@ -1,0 +1,1 @@
+InboxSDK.loadScript('https://raw.githubusercontent.com/sthowseen/ATeamHasNoName/webpack/dist/bundle.js')
