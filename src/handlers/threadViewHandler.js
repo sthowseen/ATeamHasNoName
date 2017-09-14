@@ -2,13 +2,18 @@ import { getAssetUrl } from "../utils";
 
 export default threadView => {
   let emailCount = 4;
-  
+
   let el = document.createElement("div");
+<<<<<<< HEAD
   el.className = 'spokeo-sidebar'
   el.innerHTML = "<h4>Spokeo Sidebar</h4>";
+=======
+  el.className = "spokeo-sidebar";
+  el.innerHTML = "<h4>Spokeo Subtitle</h4>";
+>>>>>>> ca0dffe9e6f0e94e36ec43bf2e73dd0d34a86439
 
-  let counter = document.createElement('div')
-  counter.classList.add('spk-counter');
+  let counter = document.createElement("div");
+  counter.classList.add("spk-counter");
   counter.innerHTML = `${emailCount}`;
 
   let contacts = document.createElement('div')
@@ -19,8 +24,8 @@ export default threadView => {
 
   var sideBar = threadView.addSidebarContentPanel({
     title: "",
-    iconUrl: '',
-    id: 'spokeo-sidebar',
+    iconUrl: "",
+    id: "spokeo-sidebar",
     el
   });
 
@@ -33,7 +38,10 @@ export default threadView => {
     users = users.concat(recipients);
   });
 
-  fetchProfiles(users);
+  var userEmails = users.map(function(user) {
+    return user.emailAddress;
+  });
+  fetchProfiles(userEmails);
 
   //Hack to force display side bar
   var sideBarEl = $(
@@ -69,8 +77,11 @@ function contact(person) {
   `;
 }
 
-function fetchProfiles(users) {
+function fetchProfiles(userEmails) {
   console.log("****USERS****");
-  console.log(users);
-  $.get("https://jsonplaceholder.typicode.com/users", updateUI);
+  console.log(userEmails);
+  $.get(
+    `https://feature12.qa.spokeo.com/hackathon/search?e=${userEmails.join(",")}`,
+    updateUI
+  );
 }
