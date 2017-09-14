@@ -1,0 +1,27 @@
+{
+  "name": "a-team-has-no-name",
+  "version": "1.0.0",
+  "description": "Spokeofied Gmail Inbox",
+  "main": "ateamhasnoname.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sthowseen/ATeamHasNoName.git"
+  },
+  "keywords": [
+    "spokeo",
+    "hackathon",
+    "ateamhasnoname"
+  ],
+  "author": "A Team Has No Name",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sthowseen/ATeamHasNoName/issues"
+  },
+  "homepage": "https://github.com/sthowseen/ATeamHasNoName#readme",
+  "devDependencies": {
+    "webpack": "^3.5.6"
+  }
+}

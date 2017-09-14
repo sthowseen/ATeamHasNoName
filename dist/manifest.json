@@ -1,5 +1,5 @@
 {
-  "name": "Spokeo",
+  "name": "A Team Has No Name",
   "description": "Example so know your contacts without leaving the window",
   "version": "0.1",
   "content_scripts": [
@@ -15,7 +15,7 @@
   ],
   "web_accessible_resources": [
     "monkey.png",
-    "ateamhasnoname.js"
+    "bundle.js"
   ],
   "permissions": [
     "https://mail.google.com/",
