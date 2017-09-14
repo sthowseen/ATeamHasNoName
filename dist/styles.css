@@ -16,19 +16,18 @@
 }
 
 /* Sidebar */
-.CfFfEJfHFBeAEHDG, 
-.AefbGEIaFBaeBdaH {
-  height: 100%;
-  height: 100%;
-  background: #F5F5F5;
-  box-shadow: 2px 0px 7px 2px rgba(0,0,0,0.5);
-  right: -7px;
-  position: relative;
+.spokeo-sidebar {
+  width: 100%;
+  height: calc(100vh - 120px);
+  overflow: hidden;
+  position: absolute;
+  top: -12px;
+  right: -8px;
+  padding: 25px 5px;
 }
 
 /* Sidebar Title */
-.IAIEAbBfcAHBIbBI, 
-.FJHaaCdFGbGcCDId {
+.spokeo-sidebar h4 {
   text-transform: uppercase;
   position: relative;
   padding-left: 0 !important;
