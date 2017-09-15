@@ -1,14 +1,19 @@
 export function getAssetUrl(assetPath) {
   // TODO: detect if local or remote assets are needed
-  return chrome.runtime.getURL(assetPath)
+  return chrome.runtime.getURL(assetPath);
 }
 
 export function createContact(person) {
   return {
     name: getName(person),
+    email: getEmail(person),
     location: getLocation(person),
     avatar: getAvatar(person)
-  }
+  };
+}
+
+function getEmail(person) {
+  return person.aggregate_info.email;
 }
 
 function getName(person) {

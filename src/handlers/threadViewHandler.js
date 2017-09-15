@@ -1,11 +1,9 @@
 import { fetchProfiles } from '../api';
 import { getAssetUrl, createContact } from '../utils';
 import { syncContacts } from '../connections';
-import sidebar, {sidebarList, sidebarProfile} from './sidebar';
+import sidebar, { sidebarList, sidebarProfile } from './sidebar';
 
-
-
-export default threadView => {
+export default userEmail => threadView => {
   let el = sidebar();
 
   el.innerHTML = sidebarList();
@@ -27,11 +25,21 @@ export default threadView => {
     users = users.concat(recipients);
   });
 
-  var userEmails = users.map(function(user) {
-    console.log(user);
-    return user.emailAddress;
+  var userEmails = users.map(user => user.emailAddress);
+  fetchProfiles(userEmails).then(profiles => {
+    let contacts = profiles.map(createContact);
+    // attach userEmail to contact if it's not set
+    contacts
+      .filter(
+        contact => !contact.email && userEmail.indexOf(contact.name) === 0
+      )
+      .forEach(contact => {
+        contact.email = userEmail;
+      });
+    contacts = contacts.filter(contact => !!contact.email);
+    updateUI(contacts);
+    syncContacts(userEmail, contacts);
   });
-  fetchProfiles(userEmails, updateUI);
 
   //Hack to force display side bar
   var sideBarEl = $(
@@ -43,25 +51,19 @@ export default threadView => {
     .css('display', 'block !important');
 };
 
-function updateUI(resp) {
-  if (typeof resp === 'string') {
-    resp = JSON.parse(resp);
-  }
-  $('.spk-counter').text(resp.length);
+function updateUI(contacts) {
+  $('.spk-counter').text(contacts.length);
 
-  let contacts = [];
-  resp.forEach(person => {
-    let contact = createContact(person);
-    contacts.push(contact);
+  contacts.forEach(contact => {
     $('<div />', {
       class: 'spokeo-contact',
       html: formatContact(contact)
-    }).appendTo($('.spokeo-contacts')).click((e) => {
-      $('.spokeo-sidebar').html(sidebarProfile(contact));
-    });
+    })
+      .appendTo($('.spokeo-contacts'))
+      .click(e => {
+        $('.spokeo-sidebar').html(sidebarProfile(contact));
+      });
   });
-
-  syncContacts(contacts);
 }
 
 function formatContact(contact) {

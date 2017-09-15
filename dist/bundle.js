@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,7 +70,7 @@
 "use strict";
 
 
-var bind = __webpack_require__(4);
+var bind = __webpack_require__(3);
 var isBuffer = __webpack_require__(19);
 
 /*global toString:true*/
@@ -375,46 +375,6 @@ module.exports = {
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["b"] = getAssetUrl;
-/* harmony export (immutable) */ __webpack_exports__["a"] = createContact;
-function getAssetUrl(assetPath) {
-  // TODO: detect if local or remote assets are needed
-  return chrome.runtime.getURL(assetPath)
-}
-
-function createContact(person) {
-  return {
-    name: getName(person),
-    location: getLocation(person),
-    avatar: getAvatar(person)
-  }
-}
-
-function getName(person) {
-  return (
-    person.aggregate_info.name ||
-    person.aggregate_info.email ||
-    person.aggregate_info.username
-  );
-}
-
-function getLocation(person) {
-  return person.aggregate_info.location || '';
-}
-
-function getAvatar(person) {
-  return (
-    (person.aggregate_info.profile_photo &&
-      person.aggregate_info.profile_photo.src) ||
-    'https://pbs.twimg.com/profile_images/477397164453527552/uh2w1u1o_400x400.jpeg'
-  );
-}
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -437,10 +397,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(6);
+    adapter = __webpack_require__(5);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(6);
+    adapter = __webpack_require__(5);
   }
   return adapter;
 }
@@ -511,53 +471,56 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = fetchProfiles;
-/* harmony export (immutable) */ __webpack_exports__["b"] = importContacts;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_qs__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_qs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_qs__);
-
-
-
-const HOSTNAME = 'https://feature12.qa.spokeo.com';
-const USER_ID = 99397903; // calvin+hackathon1@spokeo.com
-
-function fetchProfiles(userEmails, callback) {
-  $.get(`${HOSTNAME}/hackathon/search?e=${userEmails.join(',')}`, callback);
+/* harmony export (immutable) */ __webpack_exports__["b"] = getAssetUrl;
+/* harmony export (immutable) */ __webpack_exports__["a"] = createContact;
+function getAssetUrl(assetPath) {
+  // TODO: detect if local or remote assets are needed
+  return chrome.runtime.getURL(assetPath);
 }
 
-function importContacts(contacts, owner, user_id = USER_ID) {
-  let data = {
-    user_id,
-    contacts,
-    owner
+function createContact(person) {
+  return {
+    name: getName(person),
+    email: getEmail(person),
+    location: getLocation(person),
+    avatar: getAvatar(person)
   };
+}
 
-  return __WEBPACK_IMPORTED_MODULE_0_axios___default.a
-    .post(
-      `${HOSTNAME}/hackathon/import`,
-      __WEBPACK_IMPORTED_MODULE_1_qs___default.a.stringify(data, { arrayFormat: 'brackets' })
-    )
-    .then(response => {
-      console.log(response.data)
-      return response.data;
-    })
-    .catch(error => {
-      console.error(error);
-    });
+function getEmail(person) {
+  return person.aggregate_info.email;
+}
+
+function getName(person) {
+  return (
+    person.aggregate_info.name ||
+    person.aggregate_info.email ||
+    person.aggregate_info.username
+  );
+}
+
+function getLocation(person) {
+  return person.aggregate_info.location || '';
+}
+
+function getAvatar(person) {
+  return (
+    (person.aggregate_info.profile_photo &&
+      person.aggregate_info.profile_photo.src) ||
+    'https://pbs.twimg.com/profile_images/477397164453527552/uh2w1u1o_400x400.jpeg'
+  );
 }
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -575,7 +538,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -765,7 +728,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -776,7 +739,7 @@ var settle = __webpack_require__(22);
 var buildURL = __webpack_require__(24);
 var parseHeaders = __webpack_require__(25);
 var isURLSameOrigin = __webpack_require__(26);
-var createError = __webpack_require__(7);
+var createError = __webpack_require__(6);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(27);
 
 module.exports = function xhrAdapter(config) {
@@ -950,10 +913,10 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -978,7 +941,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -990,7 +953,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1016,7 +979,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1225,7 +1188,7 @@ exports.isBuffer = function isBuffer(obj) {
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1250,86 +1213,28 @@ module.exports = {
 
 
 /***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__connectionsRouteView__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__connectionsImport__ = __webpack_require__(40);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__connectionsRouteView__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__connectionsRouteView__["b"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__connectionsImport__["a"]; });
+
+
+
+
+
+
+/***/ }),
 /* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["c"] = syncContacts;
-/* harmony export (immutable) */ __webpack_exports__["b"] = createConnectionsNavItem;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__connections_connectionsRouteViewHandler__ = __webpack_require__(44);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__connections_connectionsRouteViewHandler__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(3);
-
-
-
-
-
-
-
-function syncContacts(contacts) {
-  let data = contacts.map(contact => createConnectionsContact(contact));
-  let owner = createOwner(contacts[0]);
-  Object(__WEBPACK_IMPORTED_MODULE_1__api__["b" /* importContacts */])(data, owner);
-}
-
-function createOwner(contact) {
-  return {
-    first_name: contact.name,
-    // last_name: 'Hedgehogs',
-    external_id: '85f9364d75f81e6fb75178384e9f0436d24b03b339375ae435907fc4839e2867',
-    //phone: '',
-    email: [{ address: contact.email }],
-    // groups: [],
-    // companies: [],
-    // photos: [],
-    locations: [contact.location],
-    owner: true
-  };
-}
-
-function createConnectionsContact(contact) {
-  return {
-    first_name: contact.name,
-    // last_name: contact.name,
-    // phone: [{ number: '601-928-8475', type: 'other' }],
-    email: [{ address: contact.email, type: 'other' }],
-    // address: [
-    //   {
-    //     street: '280 Flint Creek Rd',
-    //     region: 'MS',
-    //     city: 'Wiggins',
-    //     postal_code: '39577',
-    //     formatted: '280 Flint Creek Rd, Wiggins, MS 39577',
-    //     type: 'other'
-    //   }
-    // ],
-    groups: ['Contacts'],
-    // companies: [],
-    // photos: [],
-    locations: [contact.location]
-  };
-}
-
-function createConnectionsNavItem() {
-  return {
-    name: 'Spokeo Connections',
-    iconUrl: '',
-    routeID: 'spokeo',
-    onClick: showConnections
-  };
-}
-
-function showConnections(x) {
-  // console.log('clicked showConnections');
-}
-
-/***/ }),
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sidebarList__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sidebarProfile__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sidebarList__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sidebarProfile__ = __webpack_require__(42);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__sidebarList__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__sidebarProfile__["a"]; });
 
@@ -1344,43 +1249,43 @@ function showConnections(x) {
 });
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__handlers__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__connections__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(1);
-// "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__handlers__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__connections__ = __webpack_require__(11);
 
 
 
+Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
+  const sdk = results[0];
 
+  const userEmail = sdk.User.getEmailAddress();
 
-Promise.all([InboxSDK.load(2, "sdk_shakirthow_df46724836")]).then(results => {
-  var sdk = results[0];
-  console.log("A TEAM HAS NO NAME!");
+  console.log('A TEAM HAS NO NAME!');
 
-  sdk.Conversations.registerThreadViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["c" /* threadViewHandler */]);
+  sdk.Conversations.registerThreadViewHandler(Object(__WEBPACK_IMPORTED_MODULE_0__handlers__["c" /* threadViewHandler */])(userEmail));
   sdk.Lists.registerThreadRowViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["b" /* threadRowViewViewHandler */]);
   sdk.Compose.registerComposeViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["a" /* composeViewHandler */]);
-  
+
   // connections nav item and view
-  sdk.NavMenu.addNavItem(Object(__WEBPACK_IMPORTED_MODULE_1__connections__["b" /* createConnectionsNavItem */])());
-  sdk.Router.handleCustomRoute('spokeo', __WEBPACK_IMPORTED_MODULE_1__connections__["a" /* connectionsRouteViewHandler */]);
+  const spokeoRouteId = 'spokeo';
+  sdk.NavMenu.addNavItem(Object(__WEBPACK_IMPORTED_MODULE_1__connections__["b" /* createConnectionsNavItem */])(spokeoRouteId));
+  sdk.Router.handleCustomRoute(spokeoRouteId, __WEBPACK_IMPORTED_MODULE_1__connections__["a" /* connectionsRouteViewHandler */]);
 });
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__customRouteViewHandler__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__threadRowViewHandler__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__composeViewHandler__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__customRouteViewHandler__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__threadRowViewHandler__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__composeViewHandler__ = __webpack_require__(45);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__["a"]; });
 /* unused harmony reexport customRouteViewHandler */
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__threadRowViewHandler__["a"]; });
@@ -1394,22 +1299,20 @@ Promise.all([InboxSDK.load(2, "sdk_shakirthow_df46724836")]).then(results => {
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__connections__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sidebar__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__connections__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sidebar__ = __webpack_require__(12);
 
 
 
 
 
-
-
-/* harmony default export */ __webpack_exports__["a"] = (threadView => {
+/* harmony default export */ __webpack_exports__["a"] = (userEmail => threadView => {
   let el = Object(__WEBPACK_IMPORTED_MODULE_3__sidebar__["a" /* default */])();
 
   el.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_3__sidebar__["b" /* sidebarList */])();
@@ -1431,11 +1334,21 @@ Promise.all([InboxSDK.load(2, "sdk_shakirthow_df46724836")]).then(results => {
     users = users.concat(recipients);
   });
 
-  var userEmails = users.map(function(user) {
-    console.log(user);
-    return user.emailAddress;
+  var userEmails = users.map(user => user.emailAddress);
+  Object(__WEBPACK_IMPORTED_MODULE_0__api__["a" /* fetchProfiles */])(userEmails).then(profiles => {
+    let contacts = profiles.map(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* createContact */]);
+    // attach userEmail to contact if it's not set
+    contacts
+      .filter(
+        contact => !contact.email && userEmail.indexOf(contact.name) === 0
+      )
+      .forEach(contact => {
+        contact.email = userEmail;
+      });
+    contacts = contacts.filter(contact => !!contact.email);
+    updateUI(contacts);
+    Object(__WEBPACK_IMPORTED_MODULE_2__connections__["c" /* syncContacts */])(userEmail, contacts);
   });
-  Object(__WEBPACK_IMPORTED_MODULE_0__api__["a" /* fetchProfiles */])(userEmails, updateUI);
 
   //Hack to force display side bar
   var sideBarEl = $(
@@ -1447,25 +1360,19 @@ Promise.all([InboxSDK.load(2, "sdk_shakirthow_df46724836")]).then(results => {
     .css('display', 'block !important');
 });
 
-function updateUI(resp) {
-  if (typeof resp === 'string') {
-    resp = JSON.parse(resp);
-  }
-  $('.spk-counter').text(resp.length);
+function updateUI(contacts) {
+  $('.spk-counter').text(contacts.length);
 
-  let contacts = [];
-  resp.forEach(person => {
-    let contact = Object(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* createContact */])(person);
-    contacts.push(contact);
+  contacts.forEach(contact => {
     $('<div />', {
       class: 'spokeo-contact',
       html: formatContact(contact)
-    }).appendTo($('.spokeo-contacts')).click((e) => {
-      $('.spokeo-sidebar').html(Object(__WEBPACK_IMPORTED_MODULE_3__sidebar__["c" /* sidebarProfile */])(contact));
-    });
+    })
+      .appendTo($('.spokeo-contacts'))
+      .click(e => {
+        $('.spokeo-sidebar').html(Object(__WEBPACK_IMPORTED_MODULE_3__sidebar__["c" /* sidebarProfile */])(contact));
+      });
   });
-
-  Object(__WEBPACK_IMPORTED_MODULE_2__connections__["c" /* syncContacts */])(contacts);
 }
 
 function formatContact(contact) {
@@ -1478,6 +1385,52 @@ function formatContact(contact) {
       <h3>${contact.location}</h3>
     </div>
   `;
+}
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = fetchProfiles;
+/* harmony export (immutable) */ __webpack_exports__["b"] = importContacts;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_qs__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_qs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_qs__);
+
+
+
+const HOSTNAME = 'https://feature12.qa.spokeo.com';
+const USER_ID = 99397903; // calvin+hackathon1@spokeo.com/spokeo123
+// const HOSTNAME = 'https://jmercado.spokeo.com';
+// const USER_ID = 170;
+
+function fetchProfiles(userEmails) {
+  return __WEBPACK_IMPORTED_MODULE_0_axios___default.a
+    .get(`${HOSTNAME}/hackathon/search?e=${userEmails.join(',')}`)
+    .then(response => response.data)
+    .catch(console.error);
+}
+
+function importContacts(contacts, owner, user_id = USER_ID) {
+  let data = {
+    user_id,
+    contacts,
+    owner
+  };
+
+  return __WEBPACK_IMPORTED_MODULE_0_axios___default.a
+    .post(
+      `${HOSTNAME}/hackathon/import`,
+      __WEBPACK_IMPORTED_MODULE_1_qs___default.a.stringify(data, { arrayFormat: 'brackets' })
+    )
+    .then(response => {
+      console.log(response.data);
+      return response.data;
+    })
+    .catch(console.error);
 }
 
 
@@ -1495,9 +1448,9 @@ module.exports = __webpack_require__(18);
 
 
 var utils = __webpack_require__(0);
-var bind = __webpack_require__(4);
+var bind = __webpack_require__(3);
 var Axios = __webpack_require__(20);
-var defaults = __webpack_require__(2);
+var defaults = __webpack_require__(1);
 
 /**
  * Create an instance of Axios
@@ -1530,9 +1483,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(9);
+axios.Cancel = __webpack_require__(8);
 axios.CancelToken = __webpack_require__(34);
-axios.isCancel = __webpack_require__(8);
+axios.isCancel = __webpack_require__(7);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -1580,7 +1533,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(2);
+var defaults = __webpack_require__(1);
 var utils = __webpack_require__(0);
 var InterceptorManager = __webpack_require__(29);
 var dispatchRequest = __webpack_require__(30);
@@ -1692,7 +1645,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(7);
+var createError = __webpack_require__(6);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -2111,8 +2064,8 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(31);
-var isCancel = __webpack_require__(8);
-var defaults = __webpack_require__(2);
+var isCancel = __webpack_require__(7);
+var defaults = __webpack_require__(1);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -2264,7 +2217,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(9);
+var Cancel = __webpack_require__(8);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -2364,7 +2317,7 @@ module.exports = function spread(callback) {
 
 var stringify = __webpack_require__(37);
 var parse = __webpack_require__(38);
-var formats = __webpack_require__(11);
+var formats = __webpack_require__(10);
 
 module.exports = {
     formats: formats,
@@ -2380,8 +2333,8 @@ module.exports = {
 "use strict";
 
 
-var utils = __webpack_require__(10);
-var formats = __webpack_require__(11);
+var utils = __webpack_require__(9);
+var formats = __webpack_require__(10);
 
 var arrayPrefixGenerators = {
     brackets: function brackets(prefix) { // eslint-disable-line func-name-matching
@@ -2597,7 +2550,7 @@ module.exports = function (object, opts) {
 "use strict";
 
 
-var utils = __webpack_require__(10);
+var utils = __webpack_require__(9);
 
 var has = Object.prototype.hasOwnProperty;
 
@@ -2776,13 +2729,100 @@ module.exports = function (str, opts) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = connectionsRouteViewHandler;
+/* harmony export (immutable) */ __webpack_exports__["b"] = createConnectionsNavItem;
+// weird stuff here to get around a chrome bug with content security policies (CSP)
+// see https://stackoverflow.com/questions/24641592/injecting-iframe-into-page-with-restrictive-content-security-policy
+
+function connectionsRouteViewHandler(connectionsRouteView) {
+  let el = connectionsRouteView.getElement();
+
+  // Avoid recursive frame insertion...
+  var extensionOrigin = 'chrome-extension://' + chrome.runtime.id;
+  if (!location.ancestorOrigins.contains(extensionOrigin)) {
+    var iframe = document.createElement('iframe');
+    iframe.src = chrome.runtime.getURL('frame-connections.html');
+    iframe.style.cssText =
+      'position:relative;top:0;left:0;display:block;width:100%;height:100%;z-index:1000;border:0;';
+    el.appendChild(iframe);
+  }
+}
+
+function createConnectionsNavItem(routeId) {
+  return {
+    name: 'Spokeo Connections',
+    iconUrl: '',
+    routeID: routeId
+  };
+}
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = syncContacts;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(16);
+
+
+function syncContacts(userEmail, contacts) {
+  let currentUser = contacts.filter(c => c.email === userEmail)[0]
+  let owner = createOwner(currentUser);
+  let data = contacts.map(contact => createConnectionsContact(contact));
+  Object(__WEBPACK_IMPORTED_MODULE_0__api__["b" /* importContacts */])(data, owner);
+}
+
+function createOwner(contact) {
+  return {
+    first_name: contact.name,
+    // last_name: 'Hedgehogs',
+    external_id: '85f9364d75f81e6fb75178384e9f0436d24b03b339375ae435907fc4839e2867',
+    //phone: '',
+    email: [{ address: contact.email }],
+    // groups: [],
+    // companies: [],
+    // photos: [],
+    locations: [contact.location],
+    owner: true
+  };
+}
+
+function createConnectionsContact(contact) {
+  return {
+    first_name: contact.name,
+    // last_name: contact.name,
+    // phone: [{ number: '601-928-8475', type: 'other' }],
+    email: [{ address: contact.email, type: 'other' }],
+    // address: [
+    //   {
+    //     street: '280 Flint Creek Rd',
+    //     region: 'MS',
+    //     city: 'Wiggins',
+    //     postal_code: '39577',
+    //     formatted: '280 Flint Creek Rd, Wiggins, MS 39577',
+    //     type: 'other'
+    //   }
+    // ],
+    groups: ['Contacts'],
+    // companies: [],
+    // photos: [],
+    locations: [contact.location]
+  };
+}
+
+/***/ }),
+/* 41 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony default export */ __webpack_exports__["a"] = (() => {
   return `<h4>Spokeo Sidebar</h4><div class="spokeo-contacts" />`;
 });
 
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2861,7 +2901,7 @@ function contactInfo(contact) {
 }
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2871,11 +2911,11 @@ function contactInfo(contact) {
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(2);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (threadRowView => {
@@ -2896,12 +2936,12 @@ function contactInfo(contact) {
 
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sidebar__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sidebar__ = __webpack_require__(12);
 
 
 
@@ -3022,28 +3062,6 @@ function contactInfo(contact) {
       composeBox.css("margin-right", "0px");
       composeBoxInRight = true;
     }
-  }
-});
-
-
-/***/ }),
-/* 44 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-// weird stuff here to get around a chrome bug with content security policies (CSP)
-// see https://stackoverflow.com/questions/24641592/injecting-iframe-into-page-with-restrictive-content-security-policy
-
-/* harmony default export */ __webpack_exports__["a"] = (connectionsRouteView => {
-  let el = connectionsRouteView.getElement();
-
-  // Avoid recursive frame insertion...
-  var extensionOrigin = 'chrome-extension://' + chrome.runtime.id;
-  if (!location.ancestorOrigins.contains(extensionOrigin)) {
-    var iframe = document.createElement('iframe');
-    iframe.src = chrome.runtime.getURL('frame-connections.html');
-    iframe.style.cssText = 'position:relative;top:0;left:0;display:block;width:100%;height:100%;z-index:1000;border:0;';
-    el.appendChild(iframe);
   }
 });
 

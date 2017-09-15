@@ -1,15 +1,9 @@
-import connectionsRouteViewHandler from "./connections/connectionsRouteViewHandler";
+import { importContacts } from '../api';
 
-export {
-  connectionsRouteViewHandler
-};
-
-
-import { importContacts } from './api';
-
-export function syncContacts(contacts) {
+export function syncContacts(userEmail, contacts) {
+  let currentUser = contacts.filter(c => c.email === userEmail)[0]
+  let owner = createOwner(currentUser);
   let data = contacts.map(contact => createConnectionsContact(contact));
-  let owner = createOwner(contacts[0]);
   importContacts(data, owner);
 }
 
@@ -49,17 +43,4 @@ function createConnectionsContact(contact) {
     // photos: [],
     locations: [contact.location]
   };
-}
-
-export function createConnectionsNavItem() {
-  return {
-    name: 'Spokeo Connections',
-    iconUrl: '',
-    routeID: 'spokeo',
-    onClick: showConnections
-  };
-}
-
-function showConnections(x) {
-  // console.log('clicked showConnections');
 }
