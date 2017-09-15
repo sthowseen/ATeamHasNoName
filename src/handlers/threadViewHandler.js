@@ -1,3 +1,4 @@
+import { fetchProfiles } from '../api';
 import { getAssetUrl, createContact } from '../utils';
 import { syncContacts } from '../connections';
 import sidebar, {sidebarList, sidebarProfile} from './sidebar';
@@ -25,11 +26,14 @@ export default threadView => {
     users = users.concat(recipients);
   });
 
-  userEmails = users.map(function(user) {
+  $('.spokeo-sidebar-hack-right').css("display", "none");
+  
+
+  var userEmails = users.map(function(user) {
     console.log(user);
     return user.emailAddress;
   });
-  fetchProfiles(userEmails);
+  fetchProfiles(userEmails, updateUI);
 
   //Hack to force display side bar
   var sideBarEl = $(
@@ -42,6 +46,10 @@ export default threadView => {
 };
 
 function updateUI(resp) {
+  if (typeof resp === 'string') {
+    resp = JSON.parse(resp);
+  }
+  
   $('.profile-back').click(function(){
     el.firstChild.innerHTML = sidebarList();
     addCounter(resp.length);
@@ -91,14 +99,4 @@ function formatContact(contact) {
       <h3>${contact.location}</h3>
     </div>
   `;
-}
-
-function fetchProfiles(userEmails) {
-  console.log('****USERS****', userEmails);
-  $.get(
-    `https://feature12.qa.spokeo.com/hackathon/search?e=${userEmails.join(
-      ','
-    )}`,
-    updateUI
-  );
 }

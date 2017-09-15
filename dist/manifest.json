@@ -14,6 +14,7 @@
     }
   ],
   "web_accessible_resources": [
+    "frame-connections.html",
     "assets/monkey.png",
     "bundle.js",
     "assets/Logo-Black.png",

@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/sthowseen/ATeamHasNoName#readme",
   "devDependencies": {
+    "axios": "^0.16.2",
+    "qs": "^6.5.1",
     "webpack": "^3.5.6"
   }
 }
