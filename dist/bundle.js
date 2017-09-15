@@ -80,108 +80,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 Promise.all([InboxSDK.load(2, "sdk_shakirthow_df46724836")]).then(results => {
   var sdk = results[0];
-  var composeBox = null;
-  var composeBoxInRight = true;
-  var sideBar, tdLeft, tdRight;
-
   console.log("A TEAM HAS NO NAME!");
 
-  sdk.Conversations.registerThreadViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["c" /* threadViewHandler */]);
-  sdk.Router.handleCustomRoute(__WEBPACK_IMPORTED_MODULE_0__handlers__["a" /* customRouteViewHandler */]);
+  sdk.Conversations.registerThreadViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["d" /* threadViewHandler */]);
+  sdk.Router.handleCustomRoute(__WEBPACK_IMPORTED_MODULE_0__handlers__["b" /* customRouteViewHandler */]);
   sdk.NavMenu.addNavItem(Object(__WEBPACK_IMPORTED_MODULE_1__connections__["a" /* createConnectionsNavItem */])());
-  sdk.Lists.registerThreadRowViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["b" /* threadRowViewViewHandler */]);
-
-  sdk.Compose.registerComposeViewHandler(function(composeView) {
-    var el = document.createElement("div");
-    var DrawerView = null;
-    el.className = "";
-    el.innerHTML = "<h4>Spokeo Sidebar</h4>";
-
-    buildCustomSideBar();
-
-    composeView.addButton({
-      title: "Spokeo Insights",
-      iconClass: "spokeo-button",
-      iconUrl: Object(__WEBPACK_IMPORTED_MODULE_2__utils__["b" /* getAssetUrl */])("assets/Logo-Black.png"),
-      onClick: function(event) {
-        if (composeBoxInRight) {
-          showSideBar();
-        } else {
-          hideSideBar();
-        }
-      },
-      hasDropdown: false,
-      type: "MODIFIER",
-      orderHint: 0
-    });
-  });
-
-  function buildCustomSideBar() {
-    if (!document.getElementById("spokeo-sidebar-main")) {
-      var maindiv = null;
-      var alldivs = document.getElementsByTagName("div");
-
-      for (var i = 0; i < alldivs.length; i++) {
-        if (alldivs[i].getAttribute("role") == "main") maindiv = alldivs[i];
-      }
-      if (maindiv) {
-        var table = document.createElement("div");
-        tdLeft = document.createElement("div");
-        tdLeft.className = "spokeo-sidebar-hack-left";
-        tdRight = document.createElement("div");
-        tdRight.className = "spokeo-sidebar-hack-right";
-
-        sideBar = document.createElement("div");
-        sideBar.id = "spokeo-sidebar-main";
-        sideBar.className = "spokeo-sidebar-hack";
-        sideBar.style.position = "relative";
-        sideBar.style.width = "226px";
-        sideBar.style.height = "100%";
-        sideBar.style.background = "#fff";
-        sideBar.innerHTML = "HELLO WORLD!";
-
-        table.appendChild(tdLeft);
-        table.appendChild(tdRight);
-        tdRight.appendChild(sideBar);
-        $(tdRight).css("display", "none");
-        maindiv.parentNode.insertBefore(table, maindiv);
-        tdLeft.appendChild(maindiv);
-      }
-    } else {
-      $().remove();
-    }
-  }
-
-  function showSideBar() {
-    moveComposeBox();
-    console.log("tdLeft", tdLeft);
-
-    $(tdRight).css("display", "block");
-    $(tdLeft).css("width", "calc(100% - 226px)");
-  }
-
-  function hideSideBar() {
-    moveComposeBox();
-    console.log("hideSideBar", tdRight);
-    $(tdRight).css("display", "none");
-    $(tdLeft).css("width", "100%");
-  }
-
-  function moveComposeBox() {
-    var elParents = $(".inboxsdk__compose").parents();
-    if (composeBoxInRight) {
-      composeBox = elParents
-        .filter(function() {
-          return $(this).css("float") == "right";
-        })
-        .first();
-      $(composeBox).css("margin-right", "226px");
-      composeBoxInRight = false;
-    } else {
-      composeBox.css("margin-right", "0px");
-      composeBoxInRight = true;
-    }
-  }
+  sdk.Lists.registerThreadRowViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["c" /* threadRowViewViewHandler */]);
+  sdk.Compose.registerComposeViewHandler(__WEBPACK_IMPORTED_MODULE_0__handlers__["a" /* composeViewHandler */]);
 });
 
 
@@ -193,13 +98,15 @@ Promise.all([InboxSDK.load(2, "sdk_shakirthow_df46724836")]).then(results => {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__customRouteViewHandler__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__threadRowViewHandler__ = __webpack_require__(7);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__customRouteViewHandler__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__threadRowViewHandler__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__composeViewHandler__ = __webpack_require__(5);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__customRouteViewHandler__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__threadRowViewHandler__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_3__composeViewHandler__["a"]; });
 
 
 
-// import composeViewHandler from './composeViewHandler';
+
 
 
 
@@ -348,7 +255,137 @@ function getAvatar(person) {
 
 
 /***/ }),
-/* 5 */,
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sidebar__ = __webpack_require__(8);
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = (composeView => {
+  //   console.log(composeView.getBodyElement());
+
+  //   let el = document.createElement("div");
+  //   el.className = "spokeo-sidebar";
+  //   el.innerHTML = "<h4>Spokeo Sidebar</h4>";
+
+  //   let counter = document.createElement("div");
+  //   counter.classList.add("spk-counter");
+  //   counter.innerHTML = `${emailCount}`;
+
+  //   let contacts = document.createElement("div");
+  //   contacts.classList.add("spokeo-contacts");
+
+  //   el.append(counter);
+  //   el.appendChild(contacts);
+
+  //   sdk.Conversations.registerThreadViewHandler(function(threadView) {
+  //     var sideBar = threadView.addSidebarContentPanel({
+  //       title: "TEST",
+  //       iconUrl: "",
+  //       id: "spokeo-sidebar",
+  //       el
+  //     });
+  //   });
+  var composeBox = null;
+  var composeBoxInRight = true;
+  var sideBar, tdLeft, tdRight;
+
+  var el = document.createElement("div");
+  var DrawerView = null;
+  el.className = "";
+  el.innerHTML = "<h4>Spokeo Sidebar</h4>";
+
+  buildCustomSideBar();
+
+  composeView.addButton({
+    title: "Spokeo Insights",
+    iconClass: "spokeo-button",
+    iconUrl: Object(__WEBPACK_IMPORTED_MODULE_0__utils__["b" /* getAssetUrl */])("assets/Logo-Black.png"),
+    onClick: function(event) {
+      if (composeBoxInRight) {
+        showSideBar();
+      } else {
+        hideSideBar();
+      }
+    },
+    hasDropdown: false,
+    type: "MODIFIER",
+    orderHint: 0
+  });
+
+  function buildCustomSideBar() {
+    if (!document.getElementById("spokeo-sidebar-main")) {
+      var maindiv = null;
+      var alldivs = document.getElementsByTagName("div");
+
+      for (var i = 0; i < alldivs.length; i++) {
+        if (alldivs[i].getAttribute("role") == "main") maindiv = alldivs[i];
+      }
+      if (maindiv) {
+        var table = document.createElement("div");
+        tdLeft = document.createElement("div");
+        tdLeft.className = "spokeo-sidebar-hack-left";
+        tdRight = document.createElement("div");
+        tdRight.className = "spokeo-sidebar-hack-right";
+
+        sideBar = document.createElement("div");
+        sideBar.id = "spokeo-sidebar-main";
+        sideBar.className = "spokeo-sidebar-hack";
+        sideBar.style.position = "relative";
+        sideBar.style.width = "226px";
+        sideBar.style.height = "100%";
+        sideBar.style.background = "#fff";
+        sideBar.innerHTML = "HELLO WORLD!";
+
+        table.appendChild(tdLeft);
+        table.appendChild(tdRight);
+        tdRight.appendChild(sideBar);
+        $(tdRight).css("display", "none");
+        maindiv.parentNode.insertBefore(table, maindiv);
+        tdLeft.appendChild(maindiv);
+      }
+    } else {
+      $().remove();
+    }
+  }
+
+  function showSideBar() {
+    moveComposeBox();
+    console.log("tdLeft", tdLeft);
+
+    $(tdRight).css("display", "block");
+    $(tdLeft).css("width", "calc(100% - 226px)");
+  }
+
+  function hideSideBar() {
+    moveComposeBox();
+    console.log("hideSideBar", tdRight);
+    $(tdRight).css("display", "none");
+    $(tdLeft).css("width", "100%");
+  }
+
+  function moveComposeBox() {
+    var elParents = $(".inboxsdk__compose").parents();
+    if (composeBoxInRight) {
+      composeBox = elParents
+        .filter(function() {
+          return $(this).css("float") == "right";
+        })
+        .first();
+      $(composeBox).css("margin-right", "226px");
+      composeBoxInRight = false;
+    } else {
+      composeBox.css("margin-right", "0px");
+      composeBoxInRight = true;
+    }
+  }
+});
+
+
+/***/ }),
 /* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
