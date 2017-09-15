@@ -6,7 +6,7 @@ export function syncContacts(contacts) {
 
 function createConnectionsContact(contact) {
   console.log(contact)
-  debugger
+  //debugger
   return {
     first_name: contact.name,
     // last_name: null,

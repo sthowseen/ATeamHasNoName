@@ -14,6 +14,10 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
 }
 
+:root {
+  --light-gray: #f5f5f5;
+}
+
 /* Sidebar */
 .spokeo-sidebar {
   width: 100%;
@@ -27,21 +31,23 @@
 }
 
 /* Sidebar Title */
-.spokeo-sidebar h4 {
+.spokeo-sidebar h4,
+.profile-section h4 {
   letter-spacing: .5px;
   margin: 0;
   text-transform: uppercase;
   position: relative;
   padding-left: 0 !important;
-  font: bold 16px / 40px 'Montserrat', Arial, sans-serif !important;
+  font: bold 16px / 18px 'Montserrat', Arial, sans-serif !important;
 }
 
-.spokeo-sidebar h4:after {
+.spokeo-sidebar h4:after,
+.profile-section h4:after {
   content: '';
   position: absolute;
   border-bottom: 2px solid #0FA6EB;
   left: 0;
-  top: 35px;
+  top: 25px;
   width: 20px;
 }
 
@@ -78,15 +84,46 @@
   flex: 3;
 }
 
-.spokeo-contact-details h2 {
+.spokeo-contact-details h2,
+.spokeo-sidebar-profile h2 {
   font: normal 14px / 14px 'Montserrat', Arial, sans-serif !important;
   color: #545F69;
   margin: 0 0 5px 0;
 }
 
-.spokeo-contact-details h3 {
+.spokeo-contact-details h3,
+.spokeo-sidebar-profile h3 {
   font: normal 12px / 12px 'Montserrat', Arial, sans-serif !important;
   color: #758693;
   margin: 0;
 }
 
+.spokeo-sidebar-profile {
+  background: var(--light-gray);;
+  padding: 64px 8px 8px 8px;
+}
+
+.profile-hero {
+  background: white;
+  text-align: center;
+  width: calc(100% + 16px);
+  left: -8px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.profile-hero img {
+  border-radius: 70px;
+  display: block;
+  margin: 0 auto -25px auto;
+  top: -35px;
+  position: relative;
+}
+
+.profile-section {
+  width: 100%;
+  background: white;
+  margin: 8px 0;
+  padding: 12px;
+  box-sizing: border-box;
+}

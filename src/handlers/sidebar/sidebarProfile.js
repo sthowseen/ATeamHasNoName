@@ -1,4 +1,5 @@
 export default contact => {
+  console.log(contact);
   return `
     <div class="spokeo-sidebar-profile">
       <div class="profile-hero">
@@ -8,23 +9,24 @@ export default contact => {
       </div>
 
       <div class="profile-section">
-        <h2>Contact</h2>
+        <h4>Contact</h4>
         ${contactInfo(contact)}
       </div>
 
       <div class="profile-section">
-        <h2>Work</h2>
+        <h4>Work</h4>
         ${workInfo(contact)}
       </div>
 
       <div class="profile-section">
-        <h2>Social</h2>
+        <h4>Social</h4>
         ${socialInfo(contact)}
       </div>
     </div>`;
 }
 
 function contactInfo(contact) {
+  
   return '';
 }
 
