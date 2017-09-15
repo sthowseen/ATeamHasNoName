@@ -33,7 +33,7 @@ export default composeView => {
     fetchProfiles([e.contact.emailAddress]);
     var contactPill = $(
       `.inboxsdk__compose span[email='${e.contact.emailAddress}']`
-    );
+    )[0];
     $(contactPill).prepend(
       `<img class='compose-email-pill-icon' src='${getAssetUrl(
         "assets/Logo-Color.png"
@@ -51,6 +51,7 @@ export default composeView => {
   });
 
   function buildCustomSideBar() {
+    
     if (!document.getElementById("spokeo-sidebar-main")) {
       var maindiv = null;
       var alldivs = document.getElementsByTagName("div");
@@ -81,9 +82,7 @@ export default composeView => {
         maindiv.parentNode.insertBefore(table, maindiv);
         tdLeft.appendChild(maindiv);
       }
-    } else {
-      $().remove();
-    }
+    } 
   }
 
   function showSideBar() {
@@ -92,7 +91,7 @@ export default composeView => {
     var conversationView = $("div").find(`[role='listitem']`);
     if (conversationView.length == 0) {
       console.log("tdLeft", tdLeft);
-      $(tdRight).css("display", "block");
+      $('.spokeo-sidebar-hack-right').css("display", "block");
       $(tdLeft).css("width", "calc(100% - 226px)");
     }
   }
@@ -102,8 +101,8 @@ export default composeView => {
     //HACK
     var conversationView = $("div").find(`[role='listitem']`);
     if (conversationView.length == 0) {
-      console.log("hideSideBar", tdRight);
-      $(tdRight).css("display", "none");
+      console.log("hideSideBar", '.spokeo-sidebar-hack-right');
+      $('.spokeo-sidebar-hack-right').css("display", "none");
       $(tdLeft).css("width", "100%");
     }
   }

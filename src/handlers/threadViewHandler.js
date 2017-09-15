@@ -27,6 +27,9 @@ export default threadView => {
     users = users.concat(recipients);
   });
 
+  $('.spokeo-sidebar-hack-right').css("display", "none");
+  
+
   var userEmails = users.map(function(user) {
     console.log(user);
     return user.emailAddress;
