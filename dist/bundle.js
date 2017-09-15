@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 13);
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,7 +70,7 @@
 "use strict";
 
 
-var bind = __webpack_require__(3);
+var bind = __webpack_require__(4);
 var isBuffer = __webpack_require__(19);
 
 /*global toString:true*/
@@ -397,10 +397,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(5);
+    adapter = __webpack_require__(6);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(5);
+    adapter = __webpack_require__(6);
   }
   return adapter;
 }
@@ -471,7 +471,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 /* 2 */
@@ -490,7 +490,8 @@ function createContact(person) {
     name: getName(person),
     email: getEmail(person),
     location: getLocation(person),
-    avatar: getAvatar(person)
+    avatar: getAvatar(person),
+    usernames: getUsernames(person)
   };
 }
 
@@ -511,16 +512,81 @@ function getLocation(person) {
 }
 
 function getAvatar(person) {
-  return (
-    (person.aggregate_info.profile_photo &&
-      person.aggregate_info.profile_photo.src) ||
+  return getProfilePhoto(
+    person.aggregate_info,
     'https://pbs.twimg.com/profile_images/477397164453527552/uh2w1u1o_400x400.jpeg'
   );
+}
+
+function getUsernames(person) {
+  if (person.username_sources.length == 0) {
+    return [
+      {
+        username: 'coolguy',
+        avatar: getAvatar(person)
+      }
+    ];
+  }
+
+  return person.username_sources.slice(0, 2).map(source => ({
+    username: source.username || '',
+    avatar: getProfilePhoto(source)
+  }));
+}
+
+function getProfilePhoto(obj, defaultSrc = '') {
+  return (obj.profile_photo && obj.profile_photo.src) || defaultSrc;
 }
 
 
 /***/ }),
 /* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = fetchProfiles;
+/* harmony export (immutable) */ __webpack_exports__["b"] = importContacts;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_qs__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_qs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_qs__);
+
+
+
+const HOSTNAME = 'https://feature12.qa.spokeo.com';
+const USER_ID = 99397903; // calvin+hackathon1@spokeo.com/spokeo123
+// const HOSTNAME = 'https://jmercado.spokeo.com';
+// const USER_ID = 170;
+
+function fetchProfiles(userEmails) {
+  return __WEBPACK_IMPORTED_MODULE_0_axios___default.a
+    .get(`${HOSTNAME}/hackathon/search?e=${userEmails.join(',')}`)
+    .then(response => response.data)
+    .catch(console.error);
+}
+
+function importContacts(contacts, owner, user_id = USER_ID) {
+  let data = {
+    user_id,
+    contacts,
+    owner
+  };
+
+  return __WEBPACK_IMPORTED_MODULE_0_axios___default.a
+    .post(
+      `${HOSTNAME}/hackathon/import`,
+      __WEBPACK_IMPORTED_MODULE_1_qs___default.a.stringify(data, { arrayFormat: 'brackets' })
+    )
+    .then(response => {
+      console.log(response.data);
+      return response.data;
+    })
+    .catch(console.error);
+}
+
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -538,7 +604,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -728,7 +794,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -739,7 +805,7 @@ var settle = __webpack_require__(22);
 var buildURL = __webpack_require__(24);
 var parseHeaders = __webpack_require__(25);
 var isURLSameOrigin = __webpack_require__(26);
-var createError = __webpack_require__(6);
+var createError = __webpack_require__(7);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(27);
 
 module.exports = function xhrAdapter(config) {
@@ -913,10 +979,10 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -941,7 +1007,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -953,7 +1019,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -979,7 +1045,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1188,7 +1254,7 @@ exports.isBuffer = function isBuffer(obj) {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1213,7 +1279,7 @@ module.exports = {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1229,7 +1295,7 @@ module.exports = {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1245,17 +1311,18 @@ module.exports = {
 /* harmony default export */ __webpack_exports__["a"] = (() => {
   let el = document.createElement('div')
   el.className = 'spokeo-sidebar';
+  el.innerHTML = '<div class="spokeo-sidebar-content"></div><div style="display: none;" class="profile-back">back &#8594;</div>'
   return el;
 });
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__handlers__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__connections__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__handlers__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__connections__ = __webpack_require__(12);
 
 
 
@@ -1278,11 +1345,11 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__customRouteViewHandler__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__threadRowViewHandler__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__composeViewHandler__ = __webpack_require__(45);
@@ -1299,23 +1366,24 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__connections__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sidebar__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__connections__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sidebar__ = __webpack_require__(13);
 
 
 
 
+
+var userEmails = undefined;
+var el = Object(__WEBPACK_IMPORTED_MODULE_3__sidebar__["a" /* default */])();
 
 /* harmony default export */ __webpack_exports__["a"] = (userEmail => threadView => {
-  let el = Object(__WEBPACK_IMPORTED_MODULE_3__sidebar__["a" /* default */])();
-
-  el.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_3__sidebar__["b" /* sidebarList */])();
+  el.firstChild.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_3__sidebar__["b" /* sidebarList */])();
 
   var sideBar = threadView.addSidebarContentPanel({
     title: '',
@@ -1333,6 +1401,8 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
     users.push(sender);
     users = users.concat(recipients);
   });
+
+  $('.spokeo-sidebar-hack-right').css('display', 'none');
 
   var userEmails = users.map(user => user.emailAddress);
   Object(__WEBPACK_IMPORTED_MODULE_0__api__["a" /* fetchProfiles */])(userEmails).then(profiles => {
@@ -1352,8 +1422,7 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 
   //Hack to force display side bar
   var sideBarEl = $(
-    `[data-sdk-sidebar-instance-id='${sideBar._contentPanelViewImplementation
-      ._sidebarId}']`
+    `[data-sdk-sidebar-instance-id='${sideBar._contentPanelViewImplementation._sidebarId}']`
   )[0];
   $(sideBarEl)
     .first()
@@ -1361,18 +1430,37 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 });
 
 function updateUI(contacts) {
-  $('.spk-counter').text(contacts.length);
+  const _updateUI = () => {
+    console.log('threadViewHandler._updateUI', contacts)
+    addCounter(contacts.length);
+    contacts.forEach(contact => {
+      createContactSummaryItem(contact);
+    });
+  };
 
-  contacts.forEach(contact => {
-    $('<div />', {
-      class: 'spokeo-contact',
-      html: formatContact(contact)
-    })
-      .appendTo($('.spokeo-contacts'))
-      .click(e => {
-        $('.spokeo-sidebar').html(Object(__WEBPACK_IMPORTED_MODULE_3__sidebar__["c" /* sidebarProfile */])(contact));
-      });
+  $('.profile-back').click(function() {
+    el.firstChild.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_3__sidebar__["b" /* sidebarList */])();
+    _updateUI();
+    $('.profile-back').hide();
   });
+
+  _updateUI();
+}
+
+function createContactSummaryItem(contact) {
+  $('<div />', {
+    class: 'spokeo-contact',
+    html: formatContact(contact)
+  })
+    .appendTo($('.spokeo-contacts'))
+    .on('click', e => {
+      $('.spokeo-sidebar-content').html(Object(__WEBPACK_IMPORTED_MODULE_3__sidebar__["c" /* sidebarProfile */])(contact));
+      $('.profile-back').show();
+    });
+}
+
+function addCounter(counter) {
+  $('.spk-counter').text(counter);
 }
 
 function formatContact(contact) {
@@ -1385,52 +1473,6 @@ function formatContact(contact) {
       <h3>${contact.location}</h3>
     </div>
   `;
-}
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = fetchProfiles;
-/* harmony export (immutable) */ __webpack_exports__["b"] = importContacts;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_qs__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_qs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_qs__);
-
-
-
-const HOSTNAME = 'https://feature12.qa.spokeo.com';
-const USER_ID = 99397903; // calvin+hackathon1@spokeo.com/spokeo123
-// const HOSTNAME = 'https://jmercado.spokeo.com';
-// const USER_ID = 170;
-
-function fetchProfiles(userEmails) {
-  return __WEBPACK_IMPORTED_MODULE_0_axios___default.a
-    .get(`${HOSTNAME}/hackathon/search?e=${userEmails.join(',')}`)
-    .then(response => response.data)
-    .catch(console.error);
-}
-
-function importContacts(contacts, owner, user_id = USER_ID) {
-  let data = {
-    user_id,
-    contacts,
-    owner
-  };
-
-  return __WEBPACK_IMPORTED_MODULE_0_axios___default.a
-    .post(
-      `${HOSTNAME}/hackathon/import`,
-      __WEBPACK_IMPORTED_MODULE_1_qs___default.a.stringify(data, { arrayFormat: 'brackets' })
-    )
-    .then(response => {
-      console.log(response.data);
-      return response.data;
-    })
-    .catch(console.error);
 }
 
 
@@ -1448,7 +1490,7 @@ module.exports = __webpack_require__(18);
 
 
 var utils = __webpack_require__(0);
-var bind = __webpack_require__(3);
+var bind = __webpack_require__(4);
 var Axios = __webpack_require__(20);
 var defaults = __webpack_require__(1);
 
@@ -1483,9 +1525,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(8);
+axios.Cancel = __webpack_require__(9);
 axios.CancelToken = __webpack_require__(34);
-axios.isCancel = __webpack_require__(7);
+axios.isCancel = __webpack_require__(8);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -1645,7 +1687,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(6);
+var createError = __webpack_require__(7);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -2064,7 +2106,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(31);
-var isCancel = __webpack_require__(7);
+var isCancel = __webpack_require__(8);
 var defaults = __webpack_require__(1);
 
 /**
@@ -2217,7 +2259,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(8);
+var Cancel = __webpack_require__(9);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -2317,7 +2359,7 @@ module.exports = function spread(callback) {
 
 var stringify = __webpack_require__(37);
 var parse = __webpack_require__(38);
-var formats = __webpack_require__(10);
+var formats = __webpack_require__(11);
 
 module.exports = {
     formats: formats,
@@ -2333,8 +2375,8 @@ module.exports = {
 "use strict";
 
 
-var utils = __webpack_require__(9);
-var formats = __webpack_require__(10);
+var utils = __webpack_require__(10);
+var formats = __webpack_require__(11);
 
 var arrayPrefixGenerators = {
     brackets: function brackets(prefix) { // eslint-disable-line func-name-matching
@@ -2550,7 +2592,7 @@ module.exports = function (object, opts) {
 "use strict";
 
 
-var utils = __webpack_require__(9);
+var utils = __webpack_require__(10);
 
 var has = Object.prototype.hasOwnProperty;
 
@@ -2763,7 +2805,7 @@ function createConnectionsNavItem(routeId) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = syncContacts;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(3);
 
 
 function syncContacts(userEmail, contacts) {
@@ -2817,7 +2859,7 @@ function createConnectionsContact(contact) {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = (() => {
-  return `<h4>Spokeo Sidebar</h4><div class="spokeo-contacts" />`;
+  return `<h4>Spokeo Sidebar</h4><div class="spokeo-contacts"></div><div class="spk-counter"></div>`;
 });
 
 
@@ -2827,11 +2869,10 @@ function createConnectionsContact(contact) {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = (contact => {
-  console.log(contact);
   return `
     <div class="spokeo-sidebar-profile">
       <div class="profile-hero">
-        <img src="${contact.avatar}" width="70" height="70" />
+        <div class="profile-hero-avatar"><img src="${contact.avatar}" width="70" height="70" /></div>
         <h2>${contact.name}</h2>
         <h3>${contact.location}</h3>
       </div>
@@ -2844,60 +2885,101 @@ function createConnectionsContact(contact) {
       <div class="profile-section social">
         <h4>Social</h4>
         ${socialInfo(contact)}
+        <a href="https://feature12.qa.spokeo.com/social/profile?q=${contact.usernames[0].username}" class="floating-link" target="_blank">view 12 more &#8594;</a>
       </div>
 
       <div class="profile-section ">
         <h4>Contact</h4>
         ${contactInfo(contact)}
+        <a href="https://feature12.qa.spokeo.com/social/profile?q=${contact.usernames[0].username}" class="floating-link" target="_blank">view 12 more &#8594;</a>
       </div>
+
+        <a href="https://feature12.qa.spokeo.com/social/profile?q=${contact.usernames[0].username}" class="button secondary" target="_blank">View Spokeo Profile &#8594;</a>
     </div>`;
 });
 
 function workInfo(contact) {
-  let contactInfo = '';
-  for (let i = 0; i < 5; i++) {
-    contactInfo += `<div class="work-item">
-      <h2>Software Developer</h2>
-      <span>Google Inc</span>
-      <span>2011 - current</span>
-    </div>`
-  }
-
-  return contactInfo;
+  let workInfo = getWorkInfo();
+  return `
+    <div class="work-item">
+      <h2>${workInfo.title}</h2>
+      <span>${workInfo.company}</span>
+      <span>${workInfo.duration}</span>
+    </div>`;
 }
 
 function socialInfo(contact) {
   let socialInfo = '';
-  for (let i = 0; i < 5; i++) {
+
+  for (let i = 0; i < contact.usernames.length; i++) {
     socialInfo += `<div class="social-item">
         <div class="social-item-avatar">
-        <img src="${contact.avatar}" width="30" height="30" />
+        <img src="${contact.usernames[i].avatar}" width="30" height="30" />
       </div>
       <div class="social-item-details">
         <h2>${contact.name}</h2>
-        <span>${contact.name}</span>
+        <span>${contact.usernames[i].username}</span>
       </div>
     </div>`
   }
 
   return socialInfo;
+  
 }
 
 function contactInfo(contact) {
   let contactInfo = '';
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 2; i++) {
     contactInfo += `<div class="contact-item">
         <div class="contact-item-avatar">
-        <img src="${contact.avatar}" width="30" height="30" />
+        <img src="https://image.flaticon.com/icons/svg/15/15853.svg" width="30" height="30" />
       </div>
       <div class="contact-item-details">
-        <h2>${contact.name}</h2>
+        <h2>310-789-9823</h2>
         <span>Primary phone</span>
       </div>
     </div>`
   }
 
   return contactInfo;
+}
+
+function getWorkInfo() {
+
+  const workInfo = [
+    {
+      title: 'Software Developer',
+      company: 'Google Inc.',
+      duration: '2011 - Present'
+    },
+    {
+      title: 'Engineer',
+      company: 'PG & E',
+      duration: '2010 - 2012'
+    },
+    {
+      title: 'Mechanic',
+      company: 'JP Automotive',
+      duration: '2005 - 2007'
+    },
+    {
+      title: 'Teacher',
+      company: 'Los Angeles Unified School Disctrict',
+      duration: '2002 - 2015'
+    },
+    {
+      title: 'College Professor',
+      company: 'UCSB',
+      duration: '2014 - Present'
+    },
+    {
+      title: 'Gardener',
+      company: 'Warner Bros.',
+      duration: '2010 - 2011'
+    }
+  ]
+
+  return workInfo[Math.ceil(Math.ceil(Math.random() * 20) / 10)];
 }
 
 /***/ }),
@@ -2941,35 +3023,11 @@ function contactInfo(contact) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sidebar__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sidebar__ = __webpack_require__(13);
 
 
 
 /* harmony default export */ __webpack_exports__["a"] = (composeView => {
-  //   console.log(composeView.getBodyElement());
-
-  //   let el = document.createElement("div");
-  //   el.className = "spokeo-sidebar";
-  //   el.innerHTML = "<h4>Spokeo Sidebar</h4>";
-
-  //   let counter = document.createElement("div");
-  //   counter.classList.add("spk-counter");
-  //   counter.innerHTML = `${emailCount}`;
-
-  //   let contacts = document.createElement("div");
-  //   contacts.classList.add("spokeo-contacts");
-
-  //   el.append(counter);
-  //   el.appendChild(contacts);
-
-  //   sdk.Conversations.registerThreadViewHandler(function(threadView) {
-  //     var sideBar = threadView.addSidebarContentPanel({
-  //       title: "TEST",
-  //       iconUrl: "",
-  //       id: "spokeo-sidebar",
-  //       el
-  //     });
-  //   });
   var composeBox = null;
   var composeBoxInRight = true;
   var sideBar, tdLeft, tdRight;
@@ -2997,7 +3055,29 @@ function contactInfo(contact) {
     orderHint: 0
   });
 
+  composeView.on("toContactAdded", function(e) {
+    fetchProfiles([e.contact.emailAddress]);
+    var contactPill = $(
+      `.inboxsdk__compose span[email='${e.contact.emailAddress}']`
+    )[0];
+    $(contactPill).prepend(
+      `<img class='compose-email-pill-icon' src='${Object(__WEBPACK_IMPORTED_MODULE_0__utils__["b" /* getAssetUrl */])(
+        "assets/Logo-Color.png"
+      )}'/>`
+    );
+    $(contactPill).mouseenter(e => {
+      fetchProfiles(e.currentTarget.dataset.hovercardId);
+    });
+  });
+  composeView.on("ccContactAdded", function(e) {
+    console.log(e);
+  });
+  composeView.on("bccContactAdded", function(e) {
+    console.log(e);
+  });
+
   function buildCustomSideBar() {
+    
     if (!document.getElementById("spokeo-sidebar-main")) {
       var maindiv = null;
       var alldivs = document.getElementsByTagName("div");
@@ -3014,12 +3094,12 @@ function contactInfo(contact) {
 
         sideBar = document.createElement("div");
         sideBar.id = "spokeo-sidebar-main";
-        sideBar.className = "spokeo-sidebar-hack";
+        sideBar.className = "spokeo-sidebar-hack spokeo-sidebar";
         sideBar.style.position = "relative";
         sideBar.style.width = "226px";
         sideBar.style.height = "100%";
         sideBar.style.background = "#fff";
-        sideBar.innerHTML = "HELLO WORLD!";
+        sideBar.innerHTML = "<h2>Spokeo Insights</h2>";
 
         table.appendChild(tdLeft);
         table.appendChild(tdRight);
@@ -3028,24 +3108,29 @@ function contactInfo(contact) {
         maindiv.parentNode.insertBefore(table, maindiv);
         tdLeft.appendChild(maindiv);
       }
-    } else {
-      $().remove();
-    }
+    } 
   }
 
   function showSideBar() {
     moveComposeBox();
-    console.log("tdLeft", tdLeft);
-
-    $(tdRight).css("display", "block");
-    $(tdLeft).css("width", "calc(100% - 226px)");
+    //HACk
+    var conversationView = $("div").find(`[role='listitem']`);
+    if (conversationView.length == 0) {
+      console.log("tdLeft", tdLeft);
+      $('.spokeo-sidebar-hack-right').css("display", "block");
+      $(tdLeft).css("width", "calc(100% - 226px)");
+    }
   }
 
   function hideSideBar() {
     moveComposeBox();
-    console.log("hideSideBar", tdRight);
-    $(tdRight).css("display", "none");
-    $(tdLeft).css("width", "100%");
+    //HACK
+    var conversationView = $("div").find(`[role='listitem']`);
+    if (conversationView.length == 0) {
+      console.log("hideSideBar", '.spokeo-sidebar-hack-right');
+      $('.spokeo-sidebar-hack-right').css("display", "none");
+      $(tdLeft).css("width", "100%");
+    }
   }
 
   function moveComposeBox() {
@@ -3062,6 +3147,36 @@ function contactInfo(contact) {
       composeBox.css("margin-right", "0px");
       composeBoxInRight = true;
     }
+  }
+
+  function fetchProfiles(userEmail) {
+    console.log("****USERS****", userEmail);
+    $.get(
+      `https://feature12.qa.spokeo.com/hackathon/search?e=${userEmail}`,
+      updateUI
+    );
+  }
+
+  function formatContact(contact) {
+    return `
+      <div class="spokeo-contact-avatar">
+        <img src="${contact.avatar}" width="40" height="40" />
+      </div>
+      <div class="spokeo-contact-details">
+        <h2>${contact.name}</h2>
+        <h3>${contact.location}</h3>
+      </div>
+    `;
+  }
+
+  function updateUI(resp) {
+    // resp = JSON.parse(resp);
+    console.log("updateUI", resp);
+    resp.forEach(person => {
+      let contact = Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* createContact */])(person);
+      console.log(person);
+      $(".spokeo-sidebar").html(Object(__WEBPACK_IMPORTED_MODULE_1__sidebar__["c" /* sidebarProfile */])(contact));
+    });
   }
 });
 

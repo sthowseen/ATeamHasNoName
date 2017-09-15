@@ -3,10 +3,11 @@ import { getAssetUrl, createContact } from '../utils';
 import { syncContacts } from '../connections';
 import sidebar, { sidebarList, sidebarProfile } from './sidebar';
 
-export default userEmail => threadView => {
-  let el = sidebar();
+var userEmails = undefined;
+var el = sidebar();
 
-  el.innerHTML = sidebarList();
+export default userEmail => threadView => {
+  el.firstChild.innerHTML = sidebarList();
 
   var sideBar = threadView.addSidebarContentPanel({
     title: '',
@@ -24,6 +25,8 @@ export default userEmail => threadView => {
     users.push(sender);
     users = users.concat(recipients);
   });
+
+  $('.spokeo-sidebar-hack-right').css('display', 'none');
 
   var userEmails = users.map(user => user.emailAddress);
   fetchProfiles(userEmails).then(profiles => {
@@ -43,8 +46,7 @@ export default userEmail => threadView => {
 
   //Hack to force display side bar
   var sideBarEl = $(
-    `[data-sdk-sidebar-instance-id='${sideBar._contentPanelViewImplementation
-      ._sidebarId}']`
+    `[data-sdk-sidebar-instance-id='${sideBar._contentPanelViewImplementation._sidebarId}']`
   )[0];
   $(sideBarEl)
     .first()
@@ -52,18 +54,37 @@ export default userEmail => threadView => {
 };
 
 function updateUI(contacts) {
-  $('.spk-counter').text(contacts.length);
+  const _updateUI = () => {
+    console.log('threadViewHandler._updateUI', contacts)
+    addCounter(contacts.length);
+    contacts.forEach(contact => {
+      createContactSummaryItem(contact);
+    });
+  };
 
-  contacts.forEach(contact => {
-    $('<div />', {
-      class: 'spokeo-contact',
-      html: formatContact(contact)
-    })
-      .appendTo($('.spokeo-contacts'))
-      .click(e => {
-        $('.spokeo-sidebar').html(sidebarProfile(contact));
-      });
+  $('.profile-back').click(function() {
+    el.firstChild.innerHTML = sidebarList();
+    _updateUI();
+    $('.profile-back').hide();
   });
+
+  _updateUI();
+}
+
+function createContactSummaryItem(contact) {
+  $('<div />', {
+    class: 'spokeo-contact',
+    html: formatContact(contact)
+  })
+    .appendTo($('.spokeo-contacts'))
+    .on('click', e => {
+      $('.spokeo-sidebar-content').html(sidebarProfile(contact));
+      $('.profile-back').show();
+    });
+}
+
+function addCounter(counter) {
+  $('.spk-counter').text(counter);
 }
 
 function formatContact(contact) {
