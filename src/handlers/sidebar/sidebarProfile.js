@@ -15,16 +15,16 @@ export default contact => {
       <div class="profile-section social">
         <h4>Social</h4>
         ${socialInfo(contact)}
-        <a href="https://feature12.qa.spokeo.com/social/profile?q=${contact.usernames[0].username}" class="floating-link" target="_blank">view 12 more &#8594;</a>
+        <a href="https://www.spokeo.com/social/profile?q=${contact.usernames[0].username}" class="floating-link" target="_blank">view 12 more &#8594;</a>
       </div>
 
       <div class="profile-section ">
         <h4>Contact</h4>
         ${contactInfo(contact)}
-        <a href="https://feature12.qa.spokeo.com/social/profile?q=${contact.usernames[0].username}" class="floating-link" target="_blank">view 12 more &#8594;</a>
+        <a href="https://www.spokeo.com/social/profile?q=${contact.usernames[0].username}" class="floating-link" target="_blank">view 12 more &#8594;</a>
       </div>
 
-        <a href="https://feature12.qa.spokeo.com/social/profile?q=${contact.usernames[0].username}" class="button secondary" target="_blank">View Spokeo Profile &#8594;</a>
+        <a href="https://www.spokeo.com/social/profile?q=${contact.usernames[0].username}" class="button secondary" target="_blank">View Spokeo Profile &#8594;</a>
     </div>`;
 }
 
