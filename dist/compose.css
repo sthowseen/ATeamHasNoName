@@ -1,0 +1,12 @@
+.inboxsdk__inbox_backdrop {
+  background-color: transparent !important;
+}
+.spokeo-sidebar-hack-left {
+  /* width: calc(100% - 226px); */
+  float: left;
+}
+
+.spokeo-sidebar-hack-right {
+  width: 226px;
+  float: left;  
+}
