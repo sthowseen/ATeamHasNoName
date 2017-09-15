@@ -1,3 +1,10 @@
+import connectionsRouteViewHandler from "./connectionsRouteViewHandler";
+
+export {
+  connectionsRouteViewHandler
+};
+
+
 export function syncContacts(contacts) {
   console.log('syncContacts', contacts);
   let data = contacts.map(contact => createConnectionsContact(contact))
@@ -32,6 +39,11 @@ export function createConnectionsNavItem() {
   return {
     name: 'Spokeo Connections',
     iconUrl: '',
-    onClick: syncContacts
+    routeID: 'spokeo',
+    onClick: showConnections
   };
+}
+
+function showConnections(x) {
+  // console.log('clicked showConnections');
 }
