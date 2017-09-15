@@ -508,7 +508,7 @@ function getName(person) {
 }
 
 function getLocation(person) {
-  return person.aggregate_info.location || '';
+  return person.aggregate_info.location || "";
 }
 
 function getAvatar(person) {
