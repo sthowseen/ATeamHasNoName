@@ -3175,7 +3175,8 @@ function getWorkInfo() {
     resp.forEach(person => {
       let contact = Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* createContact */])(person);
       console.log(person);
-      $(".spokeo-sidebar").html(Object(__WEBPACK_IMPORTED_MODULE_1__sidebar__["c" /* sidebarProfile */])(contact));
+      $(".spokeo-sidebar-content").html(Object(__WEBPACK_IMPORTED_MODULE_1__sidebar__["c" /* sidebarProfile */])(contact));
+      $('.profile-back').show();
     });
   }
 });

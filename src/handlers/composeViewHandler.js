@@ -149,7 +149,8 @@ export default composeView => {
     resp.forEach(person => {
       let contact = createContact(person);
       console.log(person);
-      $(".spokeo-sidebar").html(sidebarProfile(contact));
+      $(".spokeo-sidebar-content").html(sidebarProfile(contact));
+      $('.profile-back').show();
     });
   }
 };
