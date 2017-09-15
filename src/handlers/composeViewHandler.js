@@ -68,7 +68,7 @@ export default composeView => {
 
         sideBar = document.createElement("div");
         sideBar.id = "spokeo-sidebar-main";
-        sideBar.className = "spokeo-sidebar-hack spokeo-sidebar";
+        sideBar.className = "spokeo-sidebar-hack spokeo-sidebar spokeo-sidebar-content";
         sideBar.style.position = "relative";
         sideBar.style.width = "226px";
         sideBar.style.height = "100%";
