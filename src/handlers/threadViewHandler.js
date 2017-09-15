@@ -43,7 +43,7 @@ export default threadView => {
 };
 
 function updateUI(resp) {
-  resp = JSON.parse(resp);
+  // resp = JSON.parse(resp);
   $('.spk-counter').text(resp.length);
 
   let contacts = [];

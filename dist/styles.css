@@ -22,6 +22,7 @@
 .spokeo-sidebar {
   width: 100%;
   height: calc(100vh - 120px);
+  height: auto;
   overflow: hidden;
   position: absolute;
   top: -12px;
@@ -34,7 +35,7 @@
 .spokeo-sidebar h4,
 .profile-section h4 {
   letter-spacing: .5px;
-  margin: 0;
+  margin: 0 0 35px 0;
   text-transform: uppercase;
   position: relative;
   padding-left: 0 !important;
@@ -67,20 +68,29 @@
   right: 5px;
 }
 
-.spokeo-contact {
+.spokeo-contact, 
+.social-item,
+.contact-item {
   display: flex;
   padding: 15px 0;
+  cursor: pointer;
 }
 
-.spokeo-contact-avatar {
+.spokeo-contact-avatar,
+.social-item-avatar,
+.contact-item-avatar {
   flex: 1;
 }
 
-.spokeo-contact-avatar img {
+.spokeo-contact-avatar img,
+.social-item-avatar img,
+.contact-item-avatar img {
   border-radius: 40px;
 }
 
-.spokeo-contact-details {
+.spokeo-contact-details,
+.social-item-details,
+.contact-item-details {
   flex: 3;
 }
 
@@ -126,4 +136,57 @@
   margin: 8px 0;
   padding: 12px;
   box-sizing: border-box;
+}
+
+.profile-section.work h4:after {
+  border-bottom-color: #AF75DD;
+}
+
+.profile-section h3 {
+  margin-bottom: 4px;
+}
+
+.profile-section span {
+  color: #AF75DD;
+  font: normal 10px / 10px 'Montserrat', Arial, sans-serif !important;
+}
+
+.profile-section span:not(:last-child):after {
+  content: '•';
+  margin: 0 5px;
+  color: #7A818A;
+  font-size: 18px;
+}
+
+.work-item, 
+.social-item, 
+.contact-item {
+  padding: 0;
+}
+
+.work-item:not(:last-child), 
+.social-item:not(:last-child), 
+.contact-item:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+.work-item span, .contact-item span {
+  text-transform: uppercase;
+}
+
+.profile-section.social h4:after {
+  border-bottom-color: #FD6F0B;
+}
+
+.social-item-details span {
+  color: #8898A4;
+  font-size: 10px;
+}
+
+.profile-section.contact h4:after {
+  border-bottom-color: #3076C8;
+}
+
+.contact-item-details span {
+  color: #3076C8;
 }
