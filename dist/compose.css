@@ -8,5 +8,15 @@
 
 .spokeo-sidebar-hack-right {
   width: 226px;
-  float: left;  
+  float: left;
 }
+.inboxsdk__compose span[email]:hover {
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
+  transform: scale(1.05) !important;
+}
+
+.compose-email-pill-icon{
+  width: 15px;
+  padding: 2px;
+} 
