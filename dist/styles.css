@@ -1,17 +1,23 @@
 @font-face {
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   font-style: normal;
   font-weight: 700;
-  src: local('Montserrat Bold'), local('Montserrat-Bold'), url('https://fonts.gstatic.com/s/montserrat/v10/IQHow_FEYlDC4Gzy_m8fcmaVI6zN22yiurzcBKxPjFE.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+  src: local("Montserrat Bold"), local("Montserrat-Bold"),
+    url("https://fonts.gstatic.com/s/montserrat/v10/IQHow_FEYlDC4Gzy_m8fcmaVI6zN22yiurzcBKxPjFE.woff2")
+      format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC,
+    U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
 }
 
 @font-face {
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   font-style: normal;
   font-weight: 400;
-  src: local('Montserrat Regular'), local('Montserrat-Regular'), url('https://fonts.gstatic.com/s/montserrat/v10/zhcz-_WihjSQC0oHJ9TCYAzyDMXhdD8sAj6OAJTFsBI.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+  src: local("Montserrat Regular"), local("Montserrat-Regular"),
+    url("https://fonts.gstatic.com/s/montserrat/v10/zhcz-_WihjSQC0oHJ9TCYAzyDMXhdD8sAj6OAJTFsBI.woff2")
+      format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC,
+    U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
 }
 
 :root {
@@ -21,12 +27,11 @@
 /* Sidebar */
 .spokeo-sidebar {
   width: 100%;
-  height: calc(100vh - 120px);
   height: auto;
   overflow: hidden;
-  position: absolute;
-  top: -12px;
-  right: -8px;
+  position: relative;
+  top: -20px;
+  right: 5px;
   padding: 25px 5px;
   background: white;
 }
@@ -34,19 +39,20 @@
 /* Sidebar Title */
 .spokeo-sidebar h4,
 .profile-section h4 {
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
   margin: 0 0 35px 0;
   text-transform: uppercase;
   position: relative;
+  color: #758693;
   padding-left: 0 !important;
-  font: bold 16px / 18px 'Montserrat', Arial, sans-serif !important;
+  font: bold 16px / 18px "Montserrat", Arial, sans-serif !important;
 }
 
 .spokeo-sidebar h4:after,
 .profile-section h4:after {
-  content: '';
+  content: "";
   position: absolute;
-  border-bottom: 2px solid #0FA6EB;
+  border-bottom: 2px solid #0fa6eb;
   left: 0;
   top: 25px;
   width: 20px;
@@ -56,7 +62,7 @@
 .spk-counter {
   position: absolute;
   border-radius: 50em;
-  background: #0FA6EB;
+  background: #0fa6eb;
   width: auto;
   height: 25px;
   padding: 11px 8px;
@@ -64,11 +70,11 @@
   color: white;
   line-height: 5px;
   font-weight: 700;
-  top: 30px;
+  top: 20px;
   right: 5px;
 }
 
-.spokeo-contact, 
+.spokeo-contact,
 .social-item,
 .contact-item {
   display: flex;
@@ -96,20 +102,20 @@
 
 .spokeo-contact-details h2,
 .spokeo-sidebar-profile h2 {
-  font: normal 14px / 14px 'Montserrat', Arial, sans-serif !important;
-  color: #545F69;
+  font: normal 14px / 14px "Montserrat", Arial, sans-serif !important;
+  color: #545f69;
   margin: 0 0 5px 0;
 }
 
 .spokeo-contact-details h3,
 .spokeo-sidebar-profile h3 {
-  font: normal 12px / 12px 'Montserrat', Arial, sans-serif !important;
+  font: normal 12px / 12px "Montserrat", Arial, sans-serif !important;
   color: #758693;
   margin: 0;
 }
 
 .spokeo-sidebar-profile {
-  background: var(--light-gray);;
+  background: var(--light-gray);
   padding: 64px 8px 8px 8px;
 }
 
@@ -122,11 +128,21 @@
   padding-bottom: 10px;
 }
 
+.profile-hero-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 100px;
+  padding: 2px;
+  box-shadow: 0 0 5px 2px rgba(0,0,0,0.3);
+  display: block;
+  top: -35px;
+  margin: 0px auto -25px;
+  position: relative;
+}
+
 .profile-hero img {
   border-radius: 70px;
   display: block;
-  margin: 0 auto -25px auto;
-  top: -35px;
   position: relative;
 }
 
@@ -139,7 +155,7 @@
 }
 
 .profile-section.work h4:after {
-  border-bottom-color: #AF75DD;
+  border-bottom-color: #af75dd;
 }
 
 .profile-section h3 {
@@ -147,46 +163,97 @@
 }
 
 .profile-section span {
-  color: #AF75DD;
-  font: normal 10px / 10px 'Montserrat', Arial, sans-serif !important;
+  color: #af75dd;
+  font: normal 10px / 10px "Montserrat", Arial, sans-serif !important;
 }
 
 .profile-section span:not(:last-child):after {
-  content: '•';
+  content: "•";
   margin: 0 5px;
-  color: #7A818A;
+  color: #7a818a;
   font-size: 18px;
 }
 
-.work-item, 
-.social-item, 
+.work-item,
+.social-item,
 .contact-item {
   padding: 0;
 }
 
-.work-item:not(:last-child), 
-.social-item:not(:last-child), 
+.work-item:not(:last-child),
+.social-item:not(:last-child),
 .contact-item:not(:last-child) {
   margin-bottom: 20px;
 }
 
-.work-item span, .contact-item span {
+.work-item span,
+.contact-item span {
   text-transform: uppercase;
 }
 
 .profile-section.social h4:after {
-  border-bottom-color: #FD6F0B;
+  border-bottom-color: #fd6f0b;
 }
 
 .social-item-details span {
-  color: #8898A4;
+  color: #8898a4;
   font-size: 10px;
 }
 
 .profile-section.contact h4:after {
-  border-bottom-color: #3076C8;
+  border-bottom-color: #3076c8;
 }
 
 .contact-item-details span {
-  color: #3076C8;
+  color: #3076c8;
+}
+
+.profile-back {
+  cursor: pointer;
+  color: #0fa6eb;
+  position: absolute;
+  top: 35px;
+  right: 10px;
+  font: normal 12px / 12px "Montserrat", Arial, sans-serif !important;
+  text-transform: uppercase;
+}
+
+.floating-link {
+  display: inline-block;
+  width: 100%;
+  border-top: 1px solid #e4e4e4;
+  font: normal 12px / 14px "Montserrat", Arial, sans-serif !important;
+  color: #0fa6eb;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 15px 0 0 0;
+  text-decoration: none;
+}
+
+.floating-link:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+.button.secondary {
+  background: #ffffff;
+  color: #545f69;
+  text-transform: uppercase;
+  border: 1px solid #c0c4c6;
+  padding: 0 20px;
+  text-align: center;
+  display: inline-block;
+  min-width: 120px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 2px;
+  font: normal 12px / 40px "Montserrat", Arial, sans-serif !important;
+  transition: background .2s ease-out;
+  text-decoration: none;
+}
+
+.button.secondary:hover {
+  border-color: #545f69;
+  box-shadow: 0 6px 4px rgba(0,0,0,0.1);
 }

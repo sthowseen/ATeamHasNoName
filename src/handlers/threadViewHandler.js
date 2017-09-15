@@ -2,12 +2,11 @@ import { getAssetUrl, createContact } from '../utils';
 import { syncContacts } from '../connections';
 import sidebar, {sidebarList, sidebarProfile} from './sidebar';
 
-
+var userEmails = undefined;
+var el = sidebar();
 
 export default threadView => {
-  let el = sidebar();
-
-  el.innerHTML = sidebarList();
+  el.firstChild.innerHTML = sidebarList();
 
   var sideBar = threadView.addSidebarContentPanel({
     title: '',
@@ -26,7 +25,7 @@ export default threadView => {
     users = users.concat(recipients);
   });
 
-  var userEmails = users.map(function(user) {
+  userEmails = users.map(function(user) {
     console.log(user);
     return user.emailAddress;
   });
@@ -43,22 +42,43 @@ export default threadView => {
 };
 
 function updateUI(resp) {
-  // resp = JSON.parse(resp);
-  $('.spk-counter').text(resp.length);
+  $('.profile-back').click(function(){
+    el.firstChild.innerHTML = sidebarList();
+    addCounter(resp.length);
+    let contacts = [];
+    resp.forEach(person => {
+      let contact = createContact(person);
+      contacts.push(contact);
+      createContactSummaryItem(contact);
+    });
+
+    $('.profile-back').hide();
+  })
 
   let contacts = [];
+  addCounter(resp.length);
+
   resp.forEach(person => {
     let contact = createContact(person);
     contacts.push(contact);
-    $('<div />', {
-      class: 'spokeo-contact',
-      html: formatContact(contact)
-    }).appendTo($('.spokeo-contacts')).click((e) => {
-      $('.spokeo-sidebar').html(sidebarProfile(contact));
-    });
+    createContactSummaryItem(contact);
   });
 
   syncContacts(contacts);
+}
+
+function createContactSummaryItem(contact) {
+  $('<div />', {
+    class: 'spokeo-contact',
+    html: formatContact(contact)
+  }).appendTo($('.spokeo-contacts')).on('click', (e) => {
+    $('.spokeo-sidebar-content').html(sidebarProfile(contact));
+    $('.profile-back').show();
+  });
+}
+
+function addCounter(counter) {
+  $('.spk-counter').text(counter);
 }
 
 function formatContact(contact) {

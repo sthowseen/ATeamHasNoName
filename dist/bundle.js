@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -68,10 +68,132 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["b"] = getAssetUrl;
+/* harmony export (immutable) */ __webpack_exports__["a"] = createContact;
+function getAssetUrl(assetPath) {
+  // TODO: detect if local or remote assets are needed
+  return chrome.runtime.getURL(assetPath)
+}
+
+function createContact(person) {
+  console.log(person);
+  return {
+    name: getName(person),
+    location: getLocation(person),
+    avatar: getAvatar(person),
+    usernames: getUsernames(person)
+  }
+}
+
+function getName(person) {
+  return (
+    person.aggregate_info.name ||
+    person.aggregate_info.email ||
+    person.aggregate_info.username
+  );
+}
+
+function getLocation(person) {
+  return person.aggregate_info.location || '';
+}
+
+function getAvatar(person) {
+  return (
+    (person.aggregate_info.profile_photo &&
+      person.aggregate_info.profile_photo.src) ||
+    'https://pbs.twimg.com/profile_images/477397164453527552/uh2w1u1o_400x400.jpeg'
+  );
+}
+
+function getUsernames(person) {
+  if (person.username_sources.length > 0) { 
+    return [
+      {username: person.username_sources[0].username || '', avatar: person.username_sources[0].profile_photo.src || ''},
+      {username: person.username_sources[1].username || '', avatar: person.username_sources[1].profile_photo.src || ''}
+    ]
+  } else {
+    return [{
+      username: 'coolguy', avatar: getAvatar(person)
+    }];
+  }
+}
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["b"] = syncContacts;
+/* harmony export (immutable) */ __webpack_exports__["a"] = createConnectionsNavItem;
+function syncContacts(contacts) {
+  console.log('syncContacts', contacts);
+  let data = contacts.map(contact => createConnectionsContact(contact))
+  console.log('data', data)
+}
+
+function createConnectionsContact(contact) {
+  console.log(contact)
+  return {
+    first_name: contact.name,
+    // last_name: null,
+    // phone: [{ number: '601-928-8475', type: 'other' }],
+    email: [{ address: contact.email, type: 'other' }],
+    // address: [
+    //   {
+    //     street: '280 Flint Creek Rd',
+    //     region: 'MS',
+    //     city: 'Wiggins',
+    //     postal_code: '39577',
+    //     formatted: '280 Flint Creek Rd, Wiggins, MS 39577',
+    //     type: 'other'
+    //   }
+    // ],
+    groups: ['Contacts'],
+    // companies: nil,
+    // photos: nil,
+    locations: [contact.location]
+  };
+}
+
+function createConnectionsNavItem() {
+  return {
+    name: 'Spokeo Connections',
+    iconUrl: '',
+    onClick: syncContacts
+  };
+}
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sidebarList__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sidebarProfile__ = __webpack_require__(7);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__sidebarList__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__sidebarProfile__["a"]; });
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = (() => {
+  let el = document.createElement('div')
+  el.className = 'spokeo-sidebar';
+  el.innerHTML = '<div class="spokeo-sidebar-content"></div><div style="display: none;" class="profile-back">back &#8594;</div>'
+  return el;
+});
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__handlers__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__connections__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__handlers__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__connections__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(0);
 // "use strict";
 
 
@@ -91,14 +213,14 @@ Promise.all([InboxSDK.load(2, "sdk_shakirthow_df46724836")]).then(results => {
 
 
 /***/ }),
-/* 1 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__customRouteViewHandler__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__threadRowViewHandler__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__composeViewHandler__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__customRouteViewHandler__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__threadRowViewHandler__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__composeViewHandler__ = __webpack_require__(10);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__threadViewHandler__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__customRouteViewHandler__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__threadRowViewHandler__["a"]; });
@@ -112,23 +234,22 @@ Promise.all([InboxSDK.load(2, "sdk_shakirthow_df46724836")]).then(results => {
 
 
 /***/ }),
-/* 2 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__connections__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sidebar__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__connections__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sidebar__ = __webpack_require__(2);
 
 
 
 
-
+var userEmails = undefined;
+var el = Object(__WEBPACK_IMPORTED_MODULE_2__sidebar__["a" /* default */])();
 
 /* harmony default export */ __webpack_exports__["a"] = (threadView => {
-  let el = Object(__WEBPACK_IMPORTED_MODULE_2__sidebar__["a" /* default */])();
-
-  el.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__sidebar__["b" /* sidebarList */])();
+  el.firstChild.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__sidebar__["b" /* sidebarList */])();
 
   var sideBar = threadView.addSidebarContentPanel({
     title: '',
@@ -147,7 +268,7 @@ Promise.all([InboxSDK.load(2, "sdk_shakirthow_df46724836")]).then(results => {
     users = users.concat(recipients);
   });
 
-  var userEmails = users.map(function(user) {
+  userEmails = users.map(function(user) {
     console.log(user);
     return user.emailAddress;
   });
@@ -164,22 +285,43 @@ Promise.all([InboxSDK.load(2, "sdk_shakirthow_df46724836")]).then(results => {
 });
 
 function updateUI(resp) {
-  // resp = JSON.parse(resp);
-  $('.spk-counter').text(resp.length);
+  $('.profile-back').click(function(){
+    el.firstChild.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__sidebar__["b" /* sidebarList */])();
+    addCounter(resp.length);
+    let contacts = [];
+    resp.forEach(person => {
+      let contact = Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* createContact */])(person);
+      contacts.push(contact);
+      createContactSummaryItem(contact);
+    });
+
+    $('.profile-back').hide();
+  })
 
   let contacts = [];
+  addCounter(resp.length);
+
   resp.forEach(person => {
     let contact = Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* createContact */])(person);
     contacts.push(contact);
-    $('<div />', {
-      class: 'spokeo-contact',
-      html: formatContact(contact)
-    }).appendTo($('.spokeo-contacts')).click((e) => {
-      $('.spokeo-sidebar').html(Object(__WEBPACK_IMPORTED_MODULE_2__sidebar__["c" /* sidebarProfile */])(contact));
-    });
+    createContactSummaryItem(contact);
   });
 
   Object(__WEBPACK_IMPORTED_MODULE_1__connections__["b" /* syncContacts */])(contacts);
+}
+
+function createContactSummaryItem(contact) {
+  $('<div />', {
+    class: 'spokeo-contact',
+    html: formatContact(contact)
+  }).appendTo($('.spokeo-contacts')).on('click', (e) => {
+    $('.spokeo-sidebar-content').html(Object(__WEBPACK_IMPORTED_MODULE_2__sidebar__["c" /* sidebarProfile */])(contact));
+    $('.profile-back').show();
+  });
+}
+
+function addCounter(counter) {
+  $('.spk-counter').text(counter);
 }
 
 function formatContact(contact) {
@@ -205,47 +347,136 @@ function fetchProfiles(userEmails) {
 }
 
 /***/ }),
-/* 3 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["b"] = getAssetUrl;
-/* harmony export (immutable) */ __webpack_exports__["a"] = createContact;
-function getAssetUrl(assetPath) {
-  // TODO: detect if local or remote assets are needed
-  return chrome.runtime.getURL(assetPath)
+/* harmony default export */ __webpack_exports__["a"] = (() => {
+  return `<h4>Spokeo Sidebar</h4><div class="spokeo-contacts"></div><div class="spk-counter"></div>`;
+});
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (contact => {
+  return `
+    <div class="spokeo-sidebar-profile">
+      <div class="profile-hero">
+        <div class="profile-hero-avatar"><img src="${contact.avatar}" width="70" height="70" /></div>
+        <h2>${contact.name}</h2>
+        <h3>${contact.location}</h3>
+      </div>
+
+      <div class="profile-section work">
+        <h4>Work</h4>
+        ${workInfo(contact)}
+      </div>
+
+      <div class="profile-section social">
+        <h4>Social</h4>
+        ${socialInfo(contact)}
+        <a href="https://feature12.qa.spokeo.com/social/profile?q=${contact.usernames[0].username}" class="floating-link" target="_blank">view 12 more &#8594;</a>
+      </div>
+
+      <div class="profile-section ">
+        <h4>Contact</h4>
+        ${contactInfo(contact)}
+        <a href="https://feature12.qa.spokeo.com/social/profile?q=${contact.usernames[0].username}" class="floating-link" target="_blank">view 12 more &#8594;</a>
+      </div>
+
+        <a href="https://feature12.qa.spokeo.com/social/profile?q=${contact.usernames[0].username}" class="button secondary" target="_blank">View Spokeo Profile &#8594;</a>
+    </div>`;
+});
+
+function workInfo(contact) {
+  let workInfo = getWorkInfo();
+  return `
+    <div class="work-item">
+      <h2>${workInfo.title}</h2>
+      <span>${workInfo.company}</span>
+      <span>${workInfo.duration}</span>
+    </div>`;
 }
 
-function createContact(person) {
-  return {
-    name: getName(person),
-    location: getLocation(person),
-    avatar: getAvatar(person)
+function socialInfo(contact) {
+  let socialInfo = '';
+
+  for (let i = 0; i < contact.usernames.length; i++) {
+    socialInfo += `<div class="social-item">
+        <div class="social-item-avatar">
+        <img src="${contact.usernames[i].avatar}" width="30" height="30" />
+      </div>
+      <div class="social-item-details">
+        <h2>${contact.name}</h2>
+        <span>${contact.usernames[i].username}</span>
+      </div>
+    </div>`
   }
+
+  return socialInfo;
+  
 }
 
-function getName(person) {
-  return (
-    person.aggregate_info.name ||
-    person.aggregate_info.email ||
-    person.aggregate_info.username
-  );
+function contactInfo(contact) {
+  let contactInfo = '';
+  for (let i = 0; i < 2; i++) {
+    contactInfo += `<div class="contact-item">
+        <div class="contact-item-avatar">
+        <img src="https://image.flaticon.com/icons/svg/15/15853.svg" width="30" height="30" />
+      </div>
+      <div class="contact-item-details">
+        <h2>310-789-9823</h2>
+        <span>Primary phone</span>
+      </div>
+    </div>`
+  }
+
+  return contactInfo;
 }
 
-function getLocation(person) {
-  return person.aggregate_info.location || '';
-}
+function getWorkInfo() {
 
-function getAvatar(person) {
-  return (
-    (person.aggregate_info.profile_photo &&
-      person.aggregate_info.profile_photo.src) ||
-    'https://pbs.twimg.com/profile_images/477397164453527552/uh2w1u1o_400x400.jpeg'
-  );
+  const workInfo = [
+    {
+      title: 'Software Developer',
+      company: 'Google Inc.',
+      duration: '2011 - Present'
+    },
+    {
+      title: 'Engineer',
+      company: 'PG & E',
+      duration: '2010 - 2012'
+    },
+    {
+      title: 'Mechanic',
+      company: 'JP Automotive',
+      duration: '2005 - 2007'
+    },
+    {
+      title: 'Teacher',
+      company: 'Los Angeles Unified School Disctrict',
+      duration: '2002 - 2015'
+    },
+    {
+      title: 'College Professor',
+      company: 'UCSB',
+      duration: '2014 - Present'
+    },
+    {
+      title: 'Gardener',
+      company: 'Warner Bros.',
+      duration: '2010 - 2011'
+    }
+  ]
+
+  return workInfo[Math.ceil(Math.ceil(Math.random() * 20) / 10)];
 }
 
 /***/ }),
-/* 4 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -255,12 +486,37 @@ function getAvatar(person) {
 
 
 /***/ }),
-/* 5 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sidebar__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
+
+
+/* harmony default export */ __webpack_exports__["a"] = (threadRowView => {
+  // let contacts = threadRowView.getContacts();
+  // threadRowView.getDraftID().then(function(a){
+  //   console.log(a)
+  // })
+  // for (let i = 0; i < contacts.length; i++) {
+  //   let contact = contacts[i];
+
+  //   threadRowView.addImage({
+  //     imageUrl: getAssetUrl('assets/monkey.png'),
+  //     tooltip: 'email',
+  //     imageClass: 'rounded_stripe'
+  //   });
+  // }
+});
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sidebar__ = __webpack_require__(2);
 
 
 
@@ -384,186 +640,6 @@ function getAvatar(person) {
   }
 });
 
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["b"] = syncContacts;
-/* harmony export (immutable) */ __webpack_exports__["a"] = createConnectionsNavItem;
-function syncContacts(contacts) {
-  console.log('syncContacts', contacts);
-  let data = contacts.map(contact => createConnectionsContact(contact))
-  console.log('data', data)
-}
-
-function createConnectionsContact(contact) {
-  console.log(contact)
-  return {
-    first_name: contact.name,
-    // last_name: null,
-    // phone: [{ number: '601-928-8475', type: 'other' }],
-    email: [{ address: contact.email, type: 'other' }],
-    // address: [
-    //   {
-    //     street: '280 Flint Creek Rd',
-    //     region: 'MS',
-    //     city: 'Wiggins',
-    //     postal_code: '39577',
-    //     formatted: '280 Flint Creek Rd, Wiggins, MS 39577',
-    //     type: 'other'
-    //   }
-    // ],
-    groups: ['Contacts'],
-    // companies: nil,
-    // photos: nil,
-    locations: [contact.location]
-  };
-}
-
-function createConnectionsNavItem() {
-  return {
-    name: 'Spokeo Connections',
-    iconUrl: '',
-    onClick: syncContacts
-  };
-}
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(3);
-
-
-/* harmony default export */ __webpack_exports__["a"] = (threadRowView => {
-  // let contacts = threadRowView.getContacts();
-  // threadRowView.getDraftID().then(function(a){
-  //   console.log(a)
-  // })
-  // for (let i = 0; i < contacts.length; i++) {
-  //   let contact = contacts[i];
-
-  //   threadRowView.addImage({
-  //     imageUrl: getAssetUrl('assets/monkey.png'),
-  //     tooltip: 'email',
-  //     imageClass: 'rounded_stripe'
-  //   });
-  // }
-});
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sidebarList__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sidebarProfile__ = __webpack_require__(10);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__sidebarList__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__sidebarProfile__["a"]; });
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = (() => {
-  let el = document.createElement('div')
-  el.className = 'spokeo-sidebar';
-  return el;
-});
-
-/***/ }),
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (() => {
-  return `<h4>Spokeo Sidebar</h4><div class="spokeo-contacts" />`;
-});
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (contact => {
-  console.log(contact);
-  return `
-    <div class="spokeo-sidebar-profile">
-      <div class="profile-hero">
-        <img src="${contact.avatar}" width="70" height="70" />
-        <h2>${contact.name}</h2>
-        <h3>${contact.location}</h3>
-      </div>
-
-      <div class="profile-section work">
-        <h4>Work</h4>
-        ${workInfo(contact)}
-      </div>
-
-      <div class="profile-section social">
-        <h4>Social</h4>
-        ${socialInfo(contact)}
-      </div>
-
-      <div class="profile-section ">
-        <h4>Contact</h4>
-        ${contactInfo(contact)}
-      </div>
-    </div>`;
-});
-
-function workInfo(contact) {
-  let contactInfo = '';
-  for (let i = 0; i < 5; i++) {
-    contactInfo += `<div class="work-item">
-      <h2>Software Developer</h2>
-      <span>Google Inc</span>
-      <span>2011 - current</span>
-    </div>`
-  }
-
-  return contactInfo;
-}
-
-function socialInfo(contact) {
-  let socialInfo = '';
-  for (let i = 0; i < 5; i++) {
-    socialInfo += `<div class="social-item">
-        <div class="social-item-avatar">
-        <img src="${contact.avatar}" width="30" height="30" />
-      </div>
-      <div class="social-item-details">
-        <h2>${contact.name}</h2>
-        <span>${contact.name}</span>
-      </div>
-    </div>`
-  }
-
-  return socialInfo;
-}
-
-function contactInfo(contact) {
-  let contactInfo = '';
-  for (let i = 0; i < 5; i++) {
-    contactInfo += `<div class="contact-item">
-        <div class="contact-item-avatar">
-        <img src="${contact.avatar}" width="30" height="30" />
-      </div>
-      <div class="contact-item-details">
-        <h2>${contact.name}</h2>
-        <span>Primary phone</span>
-      </div>
-    </div>`
-  }
-
-  return contactInfo;
-}
 
 /***/ })
 /******/ ]);
