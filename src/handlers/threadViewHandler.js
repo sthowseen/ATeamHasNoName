@@ -1,3 +1,4 @@
+import { fetchProfiles } from '../api';
 import { getAssetUrl, createContact } from '../utils';
 import { syncContacts } from '../connections';
 import sidebar, {sidebarList, sidebarProfile} from './sidebar';
@@ -30,7 +31,7 @@ export default threadView => {
     console.log(user);
     return user.emailAddress;
   });
-  fetchProfiles(userEmails);
+  fetchProfiles(userEmails, updateUI);
 
   //Hack to force display side bar
   var sideBarEl = $(
@@ -43,7 +44,9 @@ export default threadView => {
 };
 
 function updateUI(resp) {
-  // resp = JSON.parse(resp);
+  if (typeof resp === 'string') {
+    resp = JSON.parse(resp);
+  }
   $('.spk-counter').text(resp.length);
 
   let contacts = [];
@@ -71,14 +74,4 @@ function formatContact(contact) {
       <h3>${contact.location}</h3>
     </div>
   `;
-}
-
-function fetchProfiles(userEmails) {
-  console.log('****USERS****', userEmails);
-  $.get(
-    `https://feature12.qa.spokeo.com/hackathon/search?e=${userEmails.join(
-      ','
-    )}`,
-    updateUI
-  );
 }
