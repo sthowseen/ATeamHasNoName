@@ -1,25 +1,26 @@
-// "use strict";
-
 import {
   threadViewHandler,
   threadRowViewViewHandler,
   composeViewHandler
-} from "./handlers";
+} from './handlers';
 import {
   createConnectionsNavItem,
   connectionsRouteViewHandler
-} from "./connections";
-import { getAssetUrl } from "./utils";
+} from './connections';
 
-Promise.all([InboxSDK.load(2, "sdk_shakirthow_df46724836")]).then(results => {
-  var sdk = results[0];
-  console.log("A TEAM HAS NO NAME!");
+Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
+  const sdk = results[0];
 
-  sdk.Conversations.registerThreadViewHandler(threadViewHandler);
+  const userEmail = sdk.User.getEmailAddress();
+
+  console.log('A TEAM HAS NO NAME!');
+
+  sdk.Conversations.registerThreadViewHandler(threadViewHandler(userEmail));
   sdk.Lists.registerThreadRowViewHandler(threadRowViewViewHandler);
   sdk.Compose.registerComposeViewHandler(composeViewHandler);
-  
+
   // connections nav item and view
-  sdk.NavMenu.addNavItem(createConnectionsNavItem());
-  sdk.Router.handleCustomRoute('spokeo', connectionsRouteViewHandler);
+  const spokeoRouteId = 'spokeo';
+  sdk.NavMenu.addNavItem(createConnectionsNavItem(spokeoRouteId));
+  sdk.Router.handleCustomRoute(spokeoRouteId, connectionsRouteViewHandler);
 });

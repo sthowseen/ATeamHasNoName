@@ -1,12 +1,12 @@
 import { fetchProfiles } from '../api';
 import { getAssetUrl, createContact } from '../utils';
 import { syncContacts } from '../connections';
-import sidebar, {sidebarList, sidebarProfile} from './sidebar';
+import sidebar, { sidebarList, sidebarProfile } from './sidebar';
 
 var userEmails = undefined;
 var el = sidebar();
 
-export default threadView => {
+export default userEmail => threadView => {
   el.firstChild.innerHTML = sidebarList();
 
   var sideBar = threadView.addSidebarContentPanel({
@@ -26,63 +26,61 @@ export default threadView => {
     users = users.concat(recipients);
   });
 
-  $('.spokeo-sidebar-hack-right').css("display", "none");
-  
+  $('.spokeo-sidebar-hack-right').css('display', 'none');
 
-  var userEmails = users.map(function(user) {
-    console.log(user);
-    return user.emailAddress;
+  var userEmails = users.map(user => user.emailAddress);
+  fetchProfiles(userEmails).then(profiles => {
+    let contacts = profiles.map(createContact);
+    // attach userEmail to contact if it's not set
+    contacts
+      .filter(
+        contact => !contact.email && userEmail.indexOf(contact.name) === 0
+      )
+      .forEach(contact => {
+        contact.email = userEmail;
+      });
+    contacts = contacts.filter(contact => !!contact.email);
+    updateUI(contacts);
+    syncContacts(userEmail, contacts);
   });
-  fetchProfiles(userEmails, updateUI);
 
   //Hack to force display side bar
   var sideBarEl = $(
-    `[data-sdk-sidebar-instance-id='${sideBar._contentPanelViewImplementation
-      ._sidebarId}']`
+    `[data-sdk-sidebar-instance-id='${sideBar._contentPanelViewImplementation._sidebarId}']`
   )[0];
   $(sideBarEl)
     .first()
     .css('display', 'block !important');
 };
 
-function updateUI(resp) {
-  if (typeof resp === 'string') {
-    resp = JSON.parse(resp);
-  }
-  
-  $('.profile-back').click(function(){
-    el.firstChild.innerHTML = sidebarList();
-    addCounter(resp.length);
-    let contacts = [];
-    resp.forEach(person => {
-      let contact = createContact(person);
-      contacts.push(contact);
+function updateUI(contacts) {
+  const _updateUI = () => {
+    console.log('threadViewHandler._updateUI', contacts)
+    addCounter(contacts.length);
+    contacts.forEach(contact => {
       createContactSummaryItem(contact);
     });
+  };
 
+  $('.profile-back').click(function() {
+    el.firstChild.innerHTML = sidebarList();
+    _updateUI();
     $('.profile-back').hide();
-  })
-
-  let contacts = [];
-  addCounter(resp.length);
-
-  resp.forEach(person => {
-    let contact = createContact(person);
-    contacts.push(contact);
-    createContactSummaryItem(contact);
   });
 
-  syncContacts(contacts);
+  _updateUI();
 }
 
 function createContactSummaryItem(contact) {
   $('<div />', {
     class: 'spokeo-contact',
     html: formatContact(contact)
-  }).appendTo($('.spokeo-contacts')).on('click', (e) => {
-    $('.spokeo-sidebar-content').html(sidebarProfile(contact));
-    $('.profile-back').show();
-  });
+  })
+    .appendTo($('.spokeo-contacts'))
+    .on('click', e => {
+      $('.spokeo-sidebar-content').html(sidebarProfile(contact));
+      $('.profile-back').show();
+    });
 }
 
 function addCounter(counter) {

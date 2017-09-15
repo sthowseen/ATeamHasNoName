@@ -4,13 +4,17 @@ export function getAssetUrl(assetPath) {
 }
 
 export function createContact(person) {
-  console.log(person);
   return {
     name: getName(person),
+    email: getEmail(person),
     location: getLocation(person),
     avatar: getAvatar(person),
     usernames: getUsernames(person)
   };
+}
+
+function getEmail(person) {
+  return person.aggregate_info.email;
 }
 
 function getName(person) {
@@ -26,41 +30,28 @@ function getLocation(person) {
 }
 
 function getAvatar(person) {
-  return (
-    (person.aggregate_info.profile_photo &&
-      person.aggregate_info.profile_photo.src) ||
-    "https://pbs.twimg.com/profile_images/477397164453527552/uh2w1u1o_400x400.jpeg"
+  return getProfilePhoto(
+    person.aggregate_info,
+    'https://pbs.twimg.com/profile_images/477397164453527552/uh2w1u1o_400x400.jpeg'
   );
 }
 
 function getUsernames(person) {
-  console.log("*******");
-  console.log(person);
-  if (person.username_sources.length > 0) {
+  if (person.username_sources.length == 0) {
     return [
       {
-        username: person.username_sources[0].username || "",
-        avatar: getPic(person.username_sources[0]) || ""
-      },
-      {
-        username: person.username_sources[1].username || "",
-        avatar: getPic(person.username_sources[0]) || ""
-      }
-    ];
-  } else {
-    return [
-      {
-        username: "coolguy",
+        username: 'coolguy',
         avatar: getAvatar(person)
       }
     ];
   }
+
+  return person.username_sources.slice(0, 2).map(source => ({
+    username: source.username || '',
+    avatar: getProfilePhoto(source)
+  }));
 }
 
-function getPic(data) {
-  if (data.profile_photo) {
-    return data.profile_photo.src;
-  } else {
-    return "";
-  }
+function getProfilePhoto(obj, defaultSrc = '') {
+  return (obj.profile_photo && obj.profile_photo.src) || defaultSrc;
 }
