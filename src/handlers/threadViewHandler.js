@@ -1,48 +1,53 @@
 import { fetchProfiles } from '../api';
 import { getAssetUrl, createContact } from '../utils';
 import { syncContacts } from '../connections';
-import sidebar, { sidebarList, sidebarProfile } from './sidebar';
+import Sidebar, { sidebarList, sidebarProfile } from './sidebar';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 var userEmails = undefined;
-var el = sidebar();
+// var el = sidebar();
 
 export default userEmail => threadView => {
-  el.firstChild.innerHTML = sidebarList();
+  // el.firstChild.innerHTML = sidebarList();
 
-  var sideBar = threadView.addSidebarContentPanel({
-    title: '',
-    iconUrl: '',
-    id: 'spokeo-sidebar',
-    el
-  });
+  var el = document.createElement('div');
+  el.id = 'spokeo-sidebar';
 
-  var views = threadView.getMessageViews();
-  var users = [];
+  let sideBar = threadView.addSidebarContentPanel(
+    {
+      title: '',
+      iconUrl: '',
+      id: 'spokeo-sidebar',
+      el
+    }
+  );
 
-  views.forEach(function(view) {
-    var sender = view.getSender();
-    var recipients = view.getRecipients();
-    users.push(sender);
-    users = users.concat(recipients);
-  });
+  
+  setTimeout(() => {
+    ReactDOM.render(
+      <Sidebar views={threadView.getMessageViews()} userEmail={userEmail}/>,
+      document.getElementById('spokeo-sidebar')
+    );
+  }, 1000);
 
   $('.spokeo-sidebar-hack-right').css('display', 'none');
 
-  var userEmails = users.map(user => user.emailAddress);
-  fetchProfiles(userEmails).then(profiles => {
-    let contacts = profiles.map(createContact);
-    // attach userEmail to contact if it's not set
-    contacts
-      .filter(
-        contact => !contact.email && userEmail.indexOf(contact.name) === 0
-      )
-      .forEach(contact => {
-        contact.email = userEmail;
-      });
-    contacts = contacts.filter(contact => !!contact.email);
-    updateUI(contacts);
-    syncContacts(userEmail, contacts);
-  });
+  // var userEmails = users.map(user => user.emailAddress);
+  // fetchProfiles(userEmails).then(profiles => {
+  //   let contacts = profiles.map(createContact);
+  //   // attach userEmail to contact if it's not set
+  //   contacts
+  //     .filter(
+  //       contact => !contact.email && userEmail.indexOf(contact.name) === 0
+  //     )
+  //     .forEach(contact => {
+  //       contact.email = userEmail;
+  //     });
+  //   contacts = contacts.filter(contact => !!contact.email);
+  //   updateUI(contacts);
+  //   syncContacts(userEmail, contacts);
+  // });
 
   //Hack to force display side bar
   var sideBarEl = $(
