@@ -126,7 +126,7 @@ export default composeView => {
   function fetchProfiles(userEmail) {
     console.log("****USERS****", userEmail);
     $.get(
-      `https://feature12.qa.spokeo.com/hackathon/search?e=${userEmail}`,
+      `https://feature1.qa.spokeo.com/hackathon/search?e=${userEmail}`,
       updateUI
     );
   }

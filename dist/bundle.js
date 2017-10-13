@@ -375,6 +375,72 @@ module.exports = {
 
 /***/ }),
 /* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["b"] = getAssetUrl;
+/* harmony export (immutable) */ __webpack_exports__["a"] = createContact;
+function getAssetUrl(assetPath) {
+  // TODO: detect if local or remote assets are needed
+  return chrome.runtime.getURL(assetPath);
+}
+
+function createContact(person) {
+  return {
+    name: getName(person),
+    email: getEmail(person),
+    location: getLocation(person),
+    avatar: getAvatar(person),
+    usernames: getUsernames(person)
+  };
+}
+
+function getEmail(person) {
+  return person.aggregate_info.email;
+}
+
+function getName(person) {
+  return (
+    person.aggregate_info.name ||
+    person.aggregate_info.email ||
+    person.aggregate_info.username
+  );
+}
+
+function getLocation(person) {
+  return person.aggregate_info.location || "";
+}
+
+function getAvatar(person) {
+  return getProfilePhoto(
+    person.aggregate_info,
+    'https://pbs.twimg.com/profile_images/477397164453527552/uh2w1u1o_400x400.jpeg'
+  );
+}
+
+function getUsernames(person) {
+  if (person.username_sources.length == 0) {
+    return [
+      {
+        username: 'coolguy',
+        avatar: getAvatar(person)
+      }
+    ];
+  }
+
+  return person.username_sources.slice(0, 2).map(source => ({
+    username: source.username || '',
+    avatar: getProfilePhoto(source)
+  }));
+}
+
+function getProfilePhoto(obj, defaultSrc = '') {
+  return (obj.profile_photo && obj.profile_photo.src) || defaultSrc;
+}
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -474,72 +540,6 @@ module.exports = defaults;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["b"] = getAssetUrl;
-/* harmony export (immutable) */ __webpack_exports__["a"] = createContact;
-function getAssetUrl(assetPath) {
-  // TODO: detect if local or remote assets are needed
-  return chrome.runtime.getURL(assetPath);
-}
-
-function createContact(person) {
-  return {
-    name: getName(person),
-    email: getEmail(person),
-    location: getLocation(person),
-    avatar: getAvatar(person),
-    usernames: getUsernames(person)
-  };
-}
-
-function getEmail(person) {
-  return person.aggregate_info.email;
-}
-
-function getName(person) {
-  return (
-    person.aggregate_info.name ||
-    person.aggregate_info.email ||
-    person.aggregate_info.username
-  );
-}
-
-function getLocation(person) {
-  return person.aggregate_info.location || "";
-}
-
-function getAvatar(person) {
-  return getProfilePhoto(
-    person.aggregate_info,
-    'https://pbs.twimg.com/profile_images/477397164453527552/uh2w1u1o_400x400.jpeg'
-  );
-}
-
-function getUsernames(person) {
-  if (person.username_sources.length == 0) {
-    return [
-      {
-        username: 'coolguy',
-        avatar: getAvatar(person)
-      }
-    ];
-  }
-
-  return person.username_sources.slice(0, 2).map(source => ({
-    username: source.username || '',
-    avatar: getProfilePhoto(source)
-  }));
-}
-
-function getProfilePhoto(obj, defaultSrc = '') {
-  return (obj.profile_photo && obj.profile_photo.src) || defaultSrc;
-}
-
-
-/***/ }),
 /* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -553,7 +553,7 @@ function getProfilePhoto(obj, defaultSrc = '') {
 
 
 
-const HOSTNAME = 'https://feature12.qa.spokeo.com';
+const HOSTNAME = 'https://feature1.qa.spokeo.com';
 const USER_ID = 99397903; // calvin+hackathon1@spokeo.com/spokeo123
 // const HOSTNAME = 'https://jmercado.spokeo.com';
 // const USER_ID = 170;
@@ -1371,7 +1371,7 @@ Promise.all([InboxSDK.load(2, 'sdk_shakirthow_df46724836')]).then(results => {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__connections__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sidebar__ = __webpack_require__(13);
 
@@ -1492,7 +1492,7 @@ module.exports = __webpack_require__(18);
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(4);
 var Axios = __webpack_require__(20);
-var defaults = __webpack_require__(1);
+var defaults = __webpack_require__(2);
 
 /**
  * Create an instance of Axios
@@ -1575,7 +1575,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(1);
+var defaults = __webpack_require__(2);
 var utils = __webpack_require__(0);
 var InterceptorManager = __webpack_require__(29);
 var dispatchRequest = __webpack_require__(30);
@@ -2107,7 +2107,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(31);
 var isCancel = __webpack_require__(8);
-var defaults = __webpack_require__(1);
+var defaults = __webpack_require__(2);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -2773,27 +2773,29 @@ module.exports = function (str, opts) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = connectionsRouteViewHandler;
 /* harmony export (immutable) */ __webpack_exports__["b"] = createConnectionsNavItem;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(1);
 // weird stuff here to get around a chrome bug with content security policies (CSP)
 // see https://stackoverflow.com/questions/24641592/injecting-iframe-into-page-with-restrictive-content-security-policy
+
 
 function connectionsRouteViewHandler(connectionsRouteView) {
   let el = connectionsRouteView.getElement();
 
   // Avoid recursive frame insertion...
-  var extensionOrigin = 'chrome-extension://' + chrome.runtime.id;
+  var extensionOrigin = "chrome-extension://" + chrome.runtime.id;
   if (!location.ancestorOrigins.contains(extensionOrigin)) {
-    var iframe = document.createElement('iframe');
-    iframe.src = chrome.runtime.getURL('frame-connections.html');
+    var iframe = document.createElement("iframe");
+    iframe.src = chrome.runtime.getURL("frame-connections.html");
     iframe.style.cssText =
-      'position:relative;top:0;left:0;display:block;width:100%;height:100%;z-index:1000;border:0;';
+      "position:relative;top:0;left:0;display:block;width:100%;height:100%;z-index:1000;border:0;";
     el.appendChild(iframe);
   }
 }
 
 function createConnectionsNavItem(routeId) {
   return {
-    name: 'Spokeo Connections',
-    iconUrl: '',
+    name: "Connections",
+    iconUrl: Object(__WEBPACK_IMPORTED_MODULE_0__utils__["b" /* getAssetUrl */])("assets/Logo-Color.png"),
     routeID: routeId
   };
 }
@@ -2997,7 +2999,7 @@ function getWorkInfo() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(1);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (threadRowView => {
@@ -3022,7 +3024,7 @@ function getWorkInfo() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sidebar__ = __webpack_require__(13);
 
 
@@ -3152,7 +3154,7 @@ function getWorkInfo() {
   function fetchProfiles(userEmail) {
     console.log("****USERS****", userEmail);
     $.get(
-      `https://feature12.qa.spokeo.com/hackathon/search?e=${userEmail}`,
+      `https://feature1.qa.spokeo.com/hackathon/search?e=${userEmail}`,
       updateUI
     );
   }
